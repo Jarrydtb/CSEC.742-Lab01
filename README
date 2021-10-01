@@ -1,0 +1,7 @@
+TODO:
+
+
+FILES:
+- CREATE table in db to store locations of files for the website.
+- have a page render a list of files from the db.
+- when requesting the file for download use a query such as "localhost:3000/documents/download?path=[PATH TO FILE]"
