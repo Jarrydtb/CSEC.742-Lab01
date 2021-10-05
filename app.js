@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require("body-parser");
 var path = require("path");
+var vhost = require('vhost')
 
 // var root_directory = '/var/www'
 // var rootdir = ""
@@ -10,6 +11,7 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
+app.use(vhost('theseus.com',app))
 
 app.listen(3000, (req,res) => console.log("Server Listening"));
 
@@ -20,10 +22,14 @@ var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'root',
-  database : 'lab01'
+  password : 'TheseusPassword',
+  database : 'theseus'
 });
 
+connection.connect(err => {
+	if(err) throw err;
+	console.log("Connected");
+})
 
 //PAGE ROUTES
 app.get('/', (req, res) => {

@@ -1,0 +1,2 @@
+admin - admin:admin
+mysql - root:TheseusPassword
