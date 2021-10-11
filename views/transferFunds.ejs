@@ -10,23 +10,34 @@
     body{
         background-color: #272729;
         color: white;
+        padding: 2%;
     }
     .header{
       height: 10%;
       width: 100%;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
     }
   </style>
   <body>
     <div class="header">
       <div class="">
-         transfer funds
+         <a class="btn btn-primary" href="/dashboard">Home</a>
+      </div>
+      <div class="">
+         <h3>transfer funds</h3>
+      </div>
+      <div class="">
+         balance: $ <%=data.balance%>
       </div>
     </div>
     <div class="ops">
-
+        <form class="" action="/api/transferfunds" method="post">
+          <input type="email" name="recipient" placeholder="example@example.com">
+          <input type="number" name="amount" placeholder="100.0">
+          <input class="btn btn-primary" type="submit" value="transfer">
+        </form>
     </div>
   </body>
 </html>
