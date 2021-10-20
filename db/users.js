@@ -13,7 +13,6 @@ class users {
     })
   }
 
-
   addNew(conn,name, email, password){
     conn.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
       name: name,
@@ -29,10 +28,17 @@ class users {
   }
 
   updateName(conn,name,email){
-    //Continue like above.
-
+    conn.query("UPDATE users SET name = :name WHERE email= :email; SELECT name FROM users WHERE email = :email;",{
+        name: name,
+        email: email
+    }, (err, resutls)=> {
+      if (err){
+        throw error
+      } else {
+        return {status:200, msg:resutls}
+      }
+  })
   }
-
 
 }
 
