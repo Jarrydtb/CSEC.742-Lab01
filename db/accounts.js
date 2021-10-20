@@ -1,6 +1,6 @@
 class accounts {
   balanceUpdate(conn,recipient,sender,amount){
-    connection.query(
+    conn.query(
       "UPDATE accounts SET balance = balance + :amount WHERE email = :recipient;" +
       "UPDATE accounts SET balance = balance - :amount WHERE email = :sender;",
       {

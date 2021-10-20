@@ -4,7 +4,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var path = require("path");
 var vhost = require('vhost');
-var sessions = require('express-session');
+var session = require('express-session');
 var cookieParser = require('cookie-parser');
 
 //Custom File imports
@@ -21,13 +21,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(vhost('theseus.com',app))
 
-// app.use(sessions({
-//     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-//     saveUninitialized:true,
-//     cookie: { maxAge: 36000 },
-//     resave: false
-// }));
-// app.use(cookieParser());
 
 /* ------------------------- SECURITY CONFIGURATIONS ------------------------------- */
 
@@ -50,17 +43,31 @@ app.listen(3000, (req,res) => console.log("Server Listening"));
 
 /* ------------------------- MYSQL CONFIGURATIONS ------------------------------- */
 var mysql      = require('mysql');                            //MYSQL DB dependency import
-var MYSQLStore = require('express-mysql-session')(sessions)   //MYSQL Sessions dependency import
-
+var MYSQLStore = require('express-mysql-session')(session)   //MYSQL Sessions dependency import
 var connection = InitDB.initialize()
 
-//For sessions
+
+//MYSQL Sessions Config
 var sessionStore = new MYSQLStore({
   host     : 'localhost',
   user     : 'root',
   password : 'TheseusPassword',
-  database : 'sessions'
+  database : 'sessions',
+  clearExpired: true,
+  checkExpirationInterval: 900000,
+  expiration: 86400000,
+  createDatabaseTable: true,
+
 })
+
+//Express sessions
+app.use(session({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:false,
+    cookie: { maxAge: 36000 },
+    resave: false,
+    store: sessionStore
+}));
 
 
 /* ------------------------- PAGE ROUTES ------------------------------- */
@@ -82,15 +89,10 @@ app.get('/login', (req, res) => {                             // Login Page
 });
 
 app.get('/dashboard',ensureAuthenticated,(req, res) => {     // Dashboard Page
-  //sessions = req.session
-	if(sessions.email){
-		res.render('dashboard',{data: {name:sessions.name}});
-	}else{
-		res.render('login');
-	}
+	res.render('dashboard',{data: {name:sessions.name}});
 });
 
-app.get('/transferfunds', (req, res) => {
+app.get('/transferfunds', (req, res) => {                    // Transfer funds Page
     //TODO: Change to accounts balanceUpdate function
     connection.query("SELECT * FROM accounts WHERE email='"+sessions.email + "'",(err,result, fields)=>{
       var data = {balance:0}
