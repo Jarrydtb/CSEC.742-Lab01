@@ -9,7 +9,10 @@ var cookieParser = require('cookie-parser');
 
 //Custom File imports
 //SQL Files
+import InitDB from './db/initdb.js' //TODO CLose connection per request.
 import User from './db/users.js'
+import Accounts from './db/accounts.js'
+import Statements from './db/accounts.js'
 
 app.set('view engine', 'ejs');
 
@@ -26,16 +29,15 @@ app.use(vhost('theseus.com',app))
 // }));
 // app.use(cookieParser());
 
+/* ------------------------- SECURITY CONFIGURATIONS ------------------------------- */
 
 //Passport Configuration
 const passport = require('passport');
-require('./localStrategy.js')(passport);
-require('./jwtStrategy.js');
+require('./security/passport.js')(passport);
 const {ensureAuthenticated} = require('./auth.js')
-
 const secret = 'keyboard cat'
 
-const { getToken, COOKIE_OPTIONS, getRefreshToken, verifyUser} = require("./authenticate")
+
 
 //Sessions and Cookies Configuration
 app.use(cookieParser(secret));
@@ -46,25 +48,11 @@ app.use(flash());
 
 app.listen(3000, (req,res) => console.log("Server Listening"));
 
+/* ------------------------- MYSQL CONFIGURATIONS ------------------------------- */
+var mysql      = require('mysql');                            //MYSQL DB dependency import
+var MYSQLStore = require('express-mysql-session')(sessions)   //MYSQL Sessions dependency import
 
-//MYSQL CONFIGURATION
-var mysql      = require('mysql');                            //MYSQL DB
-var MYSQLStore = require('express-mysql-session')(sessions)   //MYSQL Sessions
-
-var connection = mysql.createConnection({                     //MYSQL DB Configuration
-  multipleStatements: true,
-  host     : 'localhost',
-  user     : 'root',
-  password : 'TheseusPassword',
-  database : 'theseus'
-});
-
-connection.connect(err => {                                   //Connect to MYSQL DB
-	if(err) throw err;
-	console.log("Connected");
-})
-
-
+var connection = InitDB.initialize()
 
 //For sessions
 var sessionStore = new MYSQLStore({
@@ -75,12 +63,12 @@ var sessionStore = new MYSQLStore({
 })
 
 
-//PAGE ROUTES
-app.get('/', (req, res) => {
+/* ------------------------- PAGE ROUTES ------------------------------- */
+app.get('/', (req, res) => {                                    // Landing Page
   res.render('landingPage');
 });
 
-app.post('/logout', (req, res) => {
+app.post('/logout', (req, res) => {                            // Logout Route
   req.session.destroy((err) => {
         if(err) {
             return console.log(err);
@@ -89,11 +77,11 @@ app.post('/logout', (req, res) => {
     });
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', (req, res) => {                             // Login Page
   res.render('login');
 });
 
-app.get('/dashboard',ensureAuthenticated,(req, res) => {
+app.get('/dashboard',ensureAuthenticated,(req, res) => {     // Dashboard Page
   //sessions = req.session
 	if(sessions.email){
 		res.render('dashboard',{data: {name:sessions.name}});
@@ -103,9 +91,7 @@ app.get('/dashboard',ensureAuthenticated,(req, res) => {
 });
 
 app.get('/transferfunds', (req, res) => {
-  //sessions = req.session
-	if(sessions.email){
-    //get account details
+    //TODO: Change to accounts balanceUpdate function
     connection.query("SELECT * FROM accounts WHERE email='"+sessions.email + "'",(err,result, fields)=>{
       var data = {balance:0}
       if(result.length>0){
@@ -119,25 +105,16 @@ app.get('/transferfunds', (req, res) => {
 	}
 });
 
-app.get('/statementspage', (req, res) => {
-  console.log("statements")
-  //sessions = req.session
-	if(sessions.email){
-      res.render('statements',{name:sessions.name});
-	}else{
-		res.render('login');
-	}
+app.get('/statementspage', ensureAuthenticated, (req,res) => {
+  res.render('statements',{name:sessions.name});
 });
 
-app.get('/settings',(req,res)=>{
-  if (sessions.email) {
-    res.render('settings')
-  }else{
-    res.render('login')
-  }
+app.get('/settings', ensureAuthenticated, (req,res)=>{
+  res.render('settings')
 })
 
-//ADMIN ROUTES
+/* ------------------------- ADMIN ROUTES ------------------------------- */
+
 app.get('/admin',(req, res) => {
   res.render('adminLogin');
 });
@@ -147,7 +124,9 @@ app.get('/admin/dashboard', ensureAuthenticated,(req, res) => {
   res.render('adminDashboard');
 });
 
-//API ROUTES
+/* ------------------------- API ROUTES ------------------------------- */
+
+//Login API - Regular user
 app.post('/api/auth',(req, res, next) => {
   passport.authenticate('local',{
     successRedirect: '/dashboard',
@@ -155,6 +134,7 @@ app.post('/api/auth',(req, res, next) => {
   })(req,res,next)
 });
 
+//Login API - Admin user
 app.post('/api/admin/login', (request, response) => {
   passport.authenticate('local',{
     successRedirect: '/admin/dashboard',
@@ -162,6 +142,7 @@ app.post('/api/admin/login', (request, response) => {
   })(req,res,next)
 });
 
+//Transfer funds API
 app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
   //TODO amount validation and email validation (exists)
   connection.query("UPDATE accounts SET balance = balance +" + req.body.amount + " WHERE email = '" + req.body.recipient + "';" +
@@ -171,40 +152,45 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
   });
 });
 
-app.get('/api/fetch/statement_list',(req,res)=>{
-  console.log("Here")
+//Fetch Statements API
+app.get('/api/fetch/statement_list',ensureAuthenticated,(req,res)=>{
+  //TODO CHANGE TO STATEMENTS DB FUNCTIONS : fetchStatements()
   connection.query("SELECT * FROM statements WHERE customer_email='" + sessions.email + "'",function(err,result,fields){
-    console.log(result)
-    console.log(err)
     if(err) throw err;
     var data = {statements: result}
-    console.log(data)
-    console.log(result)
 		res.json({dtatus:200,data:data});
   });
 
 });
 
-//DIRECTORY TRAVERSAL
-app.get('/api/documents/download', (req, res) => {
-  console.log(req.query)
-  console.log(req)
-  res.download(path.join(__dirname,req.query.file));
+//Download Statement API
+app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
+  //TODO Path validation
+  var root = path.join(__dirname,"/user_data")
+
+  var filename = path.join(root,req.query.file);
+  if(filename.indexOf(__dirname)!==0){
+    //trying to escape root directory
+    res.json({status:403, msg: "Access Denied "})
+  }else{
+    res.download(filename);
+  }
 });
 
 
 //SQL INJECTION
-app.post('/api/update/name',(req,res)=>{
+app.post('/api/update/name', ensureAuthenticated, (req,res)=>{
+  //TODO: ADD UPDATE NAME SQL FUNCTION FROM users.js updateName
   connection.query("UPDATE users SET name = '" + req.body.name + "' WHERE email='" + sessions.email + "'; SELECT name FROM users WHERE email ='" + sessions.email + "';",function(err,result,fields){
       res.json({result:result[1]})
   });
+
 })
 
-app.post('/api/user/add',(req,res)=>{
+app.post('/api/user/add', ensureAuthenticated, (req,res)=>{
   // TODO: ADD INPUT VALIDATION HERE & Password HASH:
-  // @NILOUFAR
   // Add user to DB
-  User.addnew(req.body.name, req.body.email,req.body.password)
+  User.addnew(connection, req.body.name, req.body.email,req.body.password)
   .then(results=>{
     console.log(results.status)
     res.json({status:200,msg:"user created successfully"})
@@ -213,4 +199,5 @@ app.post('/api/user/add',(req,res)=>{
     console.log(error)
     res.json({status:512,msg:"user creation failed"})
   })
+
 })

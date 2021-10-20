@@ -17,6 +17,6 @@ export default class inputValidation {
 
   function passwordHasher(){
     //use bcrypt with salt 10
-    
+
   }
 }

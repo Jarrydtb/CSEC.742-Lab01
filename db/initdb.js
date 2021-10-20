@@ -1,7 +1,15 @@
+const mysql = require('mysql')
+const connection = mysql.createConnection({                     //MYSQL DB Configuration
+  multipleStatements: true,
+  host     : 'localhost',
+  user     : 'root',
+  password : 'TheseusPassword',
+  database : 'theseus'
+});
 
 
 class initdb {
-  /* ------------------- PRIVATE FUNCTIONS --------------------- */
+
 
     //CREATE SQL CONNECTION
     initialize(){
@@ -9,9 +17,14 @@ class initdb {
       	if(err) throw err;
       	console.log("Connected");
       })
+      return connection
     }
+
+
     //CLOSE SQL CONNECTION
     end(){
       connection.end()
     }
 }
+
+export default initdb

@@ -2,10 +2,11 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../db/users.js')
+
+
 module.exports = function(passport){
 
   passport.use(new LocalStrategy({usernameField: 'email'},(email, password, done) => {
-    
     User.userFind("email",email)
     .then(user=>{
       if(user.length[0]){return done(null, false, { msg: 'Email is not registered' })}
@@ -19,16 +20,16 @@ module.exports = function(passport){
       });
     })
     .catch(err => console.log(err));
-  );
-
+  }
 
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
+    User.userFind("id",id,function(err, user) {
       done(err, user);
     });
   });
+
 }

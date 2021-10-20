@@ -1,34 +1,7 @@
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-  multipleStatements: true,
-  host     : 'localhost',
-  user     : 'root',
-  password : 'TheseusPassword',
-  database : 'theseus'
-});
-
-
 class users {
 
-/* ------------------- PRIVATE FUNCTIONS --------------------- */
-//Considering moving below to initdb.js and calling from app.js in mysql config
-
-  //CREATE SQL CONNECTION
-  initialize(){
-    connection.connect(err => {
-    	if(err) throw err;
-    	console.log("Connected");
-    })
-  }
-  //CLOSE SQL CONNECTION
-  end(){
-    connection.end()
-  }
-
-/* ------------------- PUBLIC SQL FUNCTIONS --------------------- */
-
-  userFind(key,value){
-    connection.query("SELECT * FROM users WHERE :key = :value",{
+  userFind(conn,key,value){
+    conn.query("SELECT * FROM users WHERE :key = :value",{
       key:key,
       value:value
     },(err,result,fields)=>{
@@ -41,8 +14,8 @@ class users {
   }
 
 
-  addNew(name, email, password){
-    connection.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
+  addNew(conn,name, email, password){
+    conn.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
       name: name,
       email: email,
       password: password
@@ -55,9 +28,9 @@ class users {
     })
   }
 
-  updateName(name,email){
+  updateName(conn,name,email){
     //Continue like above.
-    
+
   }
 
 

@@ -1,8 +1,5 @@
-
-
 class accounts {
-
-  balanceUpdate(recipient,sender,amount){
+  balanceUpdate(conn,recipient,sender,amount){
     connection.query(
       "UPDATE accounts SET balance = balance + :amount WHERE email = :recipient;" +
       "UPDATE accounts SET balance = balance - :amount WHERE email = :sender;",
@@ -16,10 +13,8 @@ class accounts {
         }else{
           return {status:200,msg:results}
         }
-      })
+    })
   }
-
-  
-
-
 }
+
+export default accounts
