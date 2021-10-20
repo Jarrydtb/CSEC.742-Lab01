@@ -5,7 +5,7 @@ const User = require('../db/users.js')
 module.exports = function(passport){
 
   passport.use(new LocalStrategy({usernameField: 'email'},(email, password, done) => {
-
+    
     User.userFind("email",email)
     .then(user=>{
       if(user.length[0]){return done(null, false, { msg: 'Email is not registered' })}

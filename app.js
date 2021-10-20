@@ -65,6 +65,8 @@ connection.connect(err => {                                   //Connect to MYSQL
 })
 
 
+
+//For sessions
 var sessionStore = new MYSQLStore({
   host     : 'localhost',
   user     : 'root',
@@ -91,7 +93,7 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard',ensureAuthenticated,(req, res) => {
   //sessions = req.session
 	if(sessions.email){
 		res.render('dashboard',{data: {name:sessions.name}});
@@ -101,7 +103,6 @@ app.get('/dashboard', (req, res) => {
 });
 
 app.get('/transferfunds', (req, res) => {
-  console.log("transferfunds")
   //sessions = req.session
 	if(sessions.email){
     //get account details
@@ -137,45 +138,32 @@ app.get('/settings',(req,res)=>{
 })
 
 //ADMIN ROUTES
-app.get('/admin', (req, res) => {
+app.get('/admin',(req, res) => {
   res.render('adminLogin');
 });
 
 
-app.get('/admin/dashboard', (req, res) => {
+app.get('/admin/dashboard', ensureAuthenticated,(req, res) => {
   res.render('adminDashboard');
 });
 
 //API ROUTES
-app.post('/api/auth', (request, response) => {
-  connection.query("SELECT * FROM users WHERE email='"+request.body.email + "' AND password='"+request.body.password+"'",(err,result, fields)=>{
-  	if(err) throw err;
-  	if(result.length>0){
-  		sessions = request.session;
-  		sessions.email = request.body.email;
-      sessions.name = result[0].name;
-      if(result[0].account_type==='admin'){
-        response.redirect(301,'/admin/dashboard')
-      }else{
-  		   response.redirect(301,'/dashboard');
-      }
-  	}else{
-      var msgJson = {status:400,msg:'authentication failed'}
-  		response.redirect(301,'/login/?error='+JSON.stringify(msgJson))
-  	}
-  });
+app.post('/api/auth',(req, res, next) => {
+  passport.authenticate('local',{
+    successRedirect: '/dashboard',
+    failureRedirect: '/login',
+  })(req,res,next)
 });
 
 app.post('/api/admin/login', (request, response) => {
-  const tmpUser = "adminguest";
-  const tmpPass = "guestpassadmin";
-  if(request.body.email === tmpUser && request.body.password === tmpPass){
-    // response.json({status:200})
-    response.redirect("/admin/dashboard")
-  }
+  passport.authenticate('local',{
+    successRedirect: '/admin/dashboard',
+    failureRedirect: '/login',
+  })(req,res,next)
 });
 
-app.post('/api/transferfunds',(req,res)=>{
+app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
+  //TODO amount validation and email validation (exists)
   connection.query("UPDATE accounts SET balance = balance +" + req.body.amount + " WHERE email = '" + req.body.recipient + "';" +
   "UPDATE accounts SET balance = balance - " + req.body.amount + " WHERE email='" + sessions.email + "'",(err,result,fields)=>{
     console.log(result)
@@ -215,7 +203,7 @@ app.post('/api/update/name',(req,res)=>{
 app.post('/api/user/add',(req,res)=>{
   // TODO: ADD INPUT VALIDATION HERE & Password HASH:
   // @NILOUFAR
-  //Add user to DB
+  // Add user to DB
   User.addnew(req.body.name, req.body.email,req.body.password)
   .then(results=>{
     console.log(results.status)

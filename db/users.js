@@ -40,18 +40,6 @@ class users {
     })
   }
 
-  // userFindAuth(email,password){
-  //   connection.query("SELECT * FROM users WHERE WHERE email = :email AND password= :password",{
-  //     email: email,
-  //     password: password
-  //   },(err,result, fields)=>{
-  //     if(err){
-  //       throw error
-  //     }else{
-  //       return {status:200,msg:results}
-  //     }
-  //   })
-  // }
 
   addNew(name, email, password){
     connection.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
@@ -69,6 +57,7 @@ class users {
 
   updateName(name,email){
     //Continue like above.
+    
   }
 
 
