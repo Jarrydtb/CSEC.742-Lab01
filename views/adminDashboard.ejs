@@ -26,7 +26,23 @@
       </div>
     </div>
     <div class="ops">
+      <h3>Create user</h3>
+      <form class="" action="/api/user/add" method="post">
+        <div class="mb-3">
+          <!-- <label for="email">Email</label> -->
+          <input id="name" type="text" name="name" placeholder="new user name">
+        </div>
+        <div class="mb-3">
+          <!-- <label for="email">Email</label> -->
+          <input id="email" type="email" name="email" placeholder="new user email address">
+        </div>
+        <div class="mb-3">
+          <!-- <label for="team_name">Enter name: </label> -->
+          <input id="password" type="password" name="password" placeholder="new password">
+        </div>
 
+        <input type="submit" value="Create User">
+      </form>
     </div>
   </body>
 </html>

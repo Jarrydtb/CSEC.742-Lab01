@@ -1,3 +1,4 @@
+//NPM File imports
 var express = require('express');
 var app = express();
 var bodyParser = require("body-parser");
@@ -6,8 +7,9 @@ var vhost = require('vhost');
 var sessions = require('express-session');
 var cookieParser = require('cookie-parser');
 
-// var root_directory = '/var/www'
-// var rootdir = ""
+//Custom File imports
+//SQL Files
+import User from './db/users.js'
 
 app.set('view engine', 'ejs');
 
@@ -15,21 +17,41 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(vhost('theseus.com',app))
-app.use(sessions({
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    saveUninitialized:true,
-    cookie: { maxAge: 36000 },
-    resave: false
-}));
-app.use(cookieParser());
+
+// app.use(sessions({
+//     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+//     saveUninitialized:true,
+//     cookie: { maxAge: 36000 },
+//     resave: false
+// }));
+// app.use(cookieParser());
+
+
+//Passport Configuration
+const passport = require('passport');
+require('./localStrategy.js')(passport);
+require('./jwtStrategy.js');
+const {ensureAuthenticated} = require('./auth.js')
+
+const secret = 'keyboard cat'
+
+const { getToken, COOKIE_OPTIONS, getRefreshToken, verifyUser} = require("./authenticate")
+
+//Sessions and Cookies Configuration
+app.use(cookieParser(secret));
+app.use(passport.initialize());
+app.use(flash());
+
+
 
 app.listen(3000, (req,res) => console.log("Server Listening"));
 
 
 //MYSQL CONFIGURATION
+var mysql      = require('mysql');                            //MYSQL DB
+var MYSQLStore = require('express-mysql-session')(sessions)   //MYSQL Sessions
 
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
+var connection = mysql.createConnection({                     //MYSQL DB Configuration
   multipleStatements: true,
   host     : 'localhost',
   user     : 'root',
@@ -37,12 +59,19 @@ var connection = mysql.createConnection({
   database : 'theseus'
 });
 
-connection.connect(err => {
+connection.connect(err => {                                   //Connect to MYSQL DB
 	if(err) throw err;
 	console.log("Connected");
 })
 
-var sessions; //This makes it vulnerable. Delete and use full 'req.session' each time 'session' would have been called
+
+var sessionStore = new MYSQLStore({
+  host     : 'localhost',
+  user     : 'root',
+  password : 'TheseusPassword',
+  database : 'sessions'
+})
+
 
 //PAGE ROUTES
 app.get('/', (req, res) => {
@@ -178,9 +207,22 @@ app.get('/api/documents/download', (req, res) => {
 
 //SQL INJECTION
 app.post('/api/update/name',(req,res)=>{
-  console.log(req.body.name);
   connection.query("UPDATE users SET name = '" + req.body.name + "' WHERE email='" + sessions.email + "'; SELECT name FROM users WHERE email ='" + sessions.email + "';",function(err,result,fields){
-      //console.log(result[1]);
       res.json({result:result[1]})
   });
+})
+
+app.post('/api/user/add',(req,res)=>{
+  // TODO: ADD INPUT VALIDATION HERE & Password HASH:
+  // @NILOUFAR
+  //Add user to DB
+  User.addnew(req.body.name, req.body.email,req.body.password)
+  .then(results=>{
+    console.log(results.status)
+    res.json({status:200,msg:"user created successfully"})
+  })
+  .catch(error=>{
+    console.log(error)
+    res.json({status:512,msg:"user creation failed"})
+  })
 })

@@ -14,4 +14,8 @@ export default class inputValidation {
   function validateTransferAmount(){
 
   }
+
+  function passwordHasher(){
+    //use bcrypt with salt 10 
+  }
 }
