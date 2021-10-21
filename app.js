@@ -205,29 +205,18 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
       Accounts.balanceUpdate(req.body.recipient,req.user.email,req.body.amount)
       .then(result=>{
         console.log(result)
-        res.redirect(301,'/transferFunds')
+        res.redirect(302,'/transferfunds')
       })
       .catch(err=>{
         console.log(err)
-        res.redirect(301,'/transferFunds')
+        res.redirect(302,'/transferfunds')
       })
     }
   })
   .catch(err=>{
     console.log(err)
-    res.redirect(301,'/transferFunds')
+    res.redirect(302,'/transferfunds')
   })
-
-
-
-  // END
-  // connection.query("UPDATE accounts SET balance = balance +" + req.body.amount + " WHERE email = '" + req.body.recipient + "';" +
-  // "UPDATE accounts SET balance = balance - " + req.body.amount + " WHERE email='" + sessions.email + "'",(err,result,fields)=>{
-  //   console.log(result)
-  //   res.redirect(301,'/transferFunds')
-  // });
-
-
 });
 
 //Fetch Statements API
