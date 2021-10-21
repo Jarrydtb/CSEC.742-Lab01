@@ -18,7 +18,7 @@ const Validation = new validationModule();
 var db = require('./db/initdb.js')//TODO CLose connection per request.
 var userDB = require('./db/users.js')
 var accountsDB = require('./db/accounts.js')
-var statementsDB = require('./db/accounts.js')
+var statementsDB = require('./db/statements.js')
 
 
 

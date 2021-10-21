@@ -1,5 +1,6 @@
 const mysql = require('mysql2')
 const pool = require('./initdb.js')
+
 module.exports = class statements {
 
   fetchStatements(email){
@@ -17,5 +18,5 @@ module.exports = class statements {
       })
     })
   }
-  
+
 }
