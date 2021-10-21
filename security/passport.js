@@ -33,15 +33,16 @@ module.exports = function(passport){
 
 
   passport.serializeUser(function(user, done) {
-    console.log(user)
     done(null, user.id);
   });
 
 
 
   passport.deserializeUser(function(id, done) {
-    User.userFindById("id",id,function(err, user) {
-      done(err, user);
+    User.userFindById(req.conn,id)
+    .then(data=>{
+      if(data.results.length>0){return done(null,false,{ msg: 'failed' })}
+      return done(err, data.results[0]);
     });
   });
 
