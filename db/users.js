@@ -6,7 +6,7 @@ module.exports =  class users {
   userFind(conn,key,value){
 
     return new Promise((resolve,reject)=>{
-
+    console.log(value)
     conn.execute("SELECT * FROM users WHERE ? = ?",[
       key,      // email, id, name etc...
       value,    // example@example.com etc...
@@ -14,9 +14,10 @@ module.exports =  class users {
       if(err){
         reject(err)
       }else{
-        resolve({status:200,msg:results})
+        resolve({status:200,results})
       }
     })
+
   })
 }
 
@@ -29,7 +30,7 @@ module.exports =  class users {
       if(err){
         throw err
       }else{
-        return {status:200,msg:results}
+        return {status:200,results}
       }
     })
   }
