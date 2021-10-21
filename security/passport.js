@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 
 const initDb = require('../db/initdb.js')
-const InitDb = new initDb()
+const InitDB = new initDb()
 const conn = InitDB.initialize()
 
 const userDB = require('../db/users.js')
