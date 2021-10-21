@@ -201,10 +201,10 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
   //TODO amount validation and email validation (exists)
   Validation.validateTransferAmount(req.user.email,req.body.amount)
   .then(result=>{
-    console.log(result)
     if(result){
       Accounts.balanceUpdate(req.body.recipient,req.user.email,req.body.amount)
       .then(result=>{
+        console.log(result)
         res.redirect(301,'/transferFunds')
       })
       .catch(err=>{
