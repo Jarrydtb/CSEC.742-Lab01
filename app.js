@@ -250,6 +250,7 @@ app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
     var filename = path.join(root,req.query.file);
     if(filename.indexOf(__dirname)!==0){
       //trying to escape root directory
+      console.log("error")
       res.json({status:403, msg: "Access Denied "})
     }else{
       res.download(filename, function(err){
@@ -276,7 +277,7 @@ app.post('/api/user/add', ensureAuthenticated, (req,res)=>{
   // Add user to DB
   Validation.validatePassword(req.body.password)
   .then(hashedPassword=>{
-    if(!Validation.validateEmail(req.body.email)||!Validation.validateString(req.body.name)){tres.json({status:403, msg: "Access Denied "})}
+    if(!Validation.validateEmail(req.body.email)||!Validation.validateString(req.body.name)){res.json({status:403, msg: "Access Denied "})}
 
     User.addNew(req.body.name, req.body.email, hashedPassword)
     .then(results=>{
