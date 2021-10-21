@@ -14,13 +14,14 @@ module.exports = function(passport){
 
     User.userFind(req.conn,"email",email)
     .then(data=>{
-      console.log(data)
       if(data.results.length>0){return done(null, false, { msg: 'Email is not registered' })}
       bcrypt.compare(password, data.results[0].password,(err,isMatch)=>{
           if(err) throw err;
           if(isMatch){
+            console.log("Good")
             return done(null,user);
           }else{
+            console.log("Bad")
             return done(null,false,{ msg: 'Incorrect Password' });
           }
       });
