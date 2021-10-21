@@ -157,7 +157,13 @@ app.post('/api/auth', (req,res,next) => {
         if (logInErr) {
           console.log(logInErr)
         }
-        req.session.save(() => res.redirect('/dashboard'));
+        req.session.save(() => {
+          if(req.user.account_type=="admin"){
+            res.redirect('/admin/dashboard')
+          }else{
+            res.redirect('/dashboard')
+          }
+        });
       });
     })(req, res, next);
   });
@@ -176,7 +182,13 @@ app.post('/api/admin/login', (request, response) => {
         if (logInErr) {
           console.log(logInErr)
         }
-        req.session.save(() => res.redirect('/admin/dashboard'));
+        req.session.save(() => {
+          if(req.user.account_type=="admin"){
+            res.redirect('/admin/dashboard')
+          }else{
+            res.redirect('/dashboard')
+          }
+        });
       });
     })(req, res, next);
 });
