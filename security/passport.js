@@ -24,8 +24,9 @@ module.exports = function(passport){
           }
       });
     })
-    .then( InitDB.end() )
     .catch(err => console.log(err));
+
+
   }));
 
 
