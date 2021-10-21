@@ -1,3 +1,4 @@
+const mysql = require('mysql')
 module.exports =  class users {
 
   userFind(conn,key,value){

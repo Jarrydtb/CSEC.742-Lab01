@@ -1,3 +1,4 @@
+const mysql = require('mysql')
 module.exports = class accounts {
   balanceUpdate(conn,recipient,sender,amount){
     conn.query(
