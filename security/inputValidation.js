@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 module.exports = class inputValidation {
 
   validateEmail(email){//returns true or false
