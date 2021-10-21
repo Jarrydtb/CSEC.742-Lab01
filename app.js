@@ -90,7 +90,8 @@ app.get('/', (req, res) => {                                    // Landing Page
   res.render('landingPage');
 });
 
-app.post('/logout', (req, res) => {                            // Logout Route
+app.post('/logout', (req, res) => {
+  console.log("logout")                     // Logout Route
   req.session.destroy((err) => {
         if(err) {
             return console.log(err);
