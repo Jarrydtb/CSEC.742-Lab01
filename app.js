@@ -126,7 +126,7 @@ app.get('/transferfunds', (req, res) => {                    // Transfer funds P
       res.render('transferFunds',{data:data});
     })
     .catch(err=>{
-      res.render('transferFunds',{data:data});
+      res.render('transferFunds',{data: []});
     })
 
 });
