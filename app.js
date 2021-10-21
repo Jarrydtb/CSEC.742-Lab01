@@ -123,6 +123,7 @@ app.get('/transferfunds', (req, res) => {                    // Transfer funds P
     // });
     Accounts.getBalance(req.user.email)
     .then(data=>{
+      console.log(data)
       res.render('transferFunds',{data:data});
     })
     .catch(err=>{
