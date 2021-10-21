@@ -58,11 +58,19 @@ var sessionStore = new MYSQLStore({
   host     : 'localhost',
   user     : 'root',
   password : 'TheseusPassword',
-  database : 'sessions',
+  database : 'theseus',
   clearExpired: true,
   checkExpirationInterval: 900000,
   expiration: 86400000,
   createDatabaseTable: true,
+  schema: {
+		tableName: 'sessions',
+		columnNames: {
+			session_id: 'session_id',
+			expires: 'expires',
+			data: 'data'
+		}
+	}
 
 })
 
