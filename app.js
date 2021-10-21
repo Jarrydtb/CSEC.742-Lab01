@@ -29,7 +29,7 @@ app.use(vhost('theseus.com',app))
 //Passport Configuration
 const passport = require('passport');
 require('./security/passport.js')(passport);
-const {ensureAuthenticated} = require('./security/auth.js')
+const ensureAuthenticated = require('./security/auth.js')
 const secret = 'keyboard cat'
 
 
