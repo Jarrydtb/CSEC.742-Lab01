@@ -233,11 +233,9 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
 app.get('/api/fetch/statement_list',ensureAuthenticated,(req,res)=>{
   Statements.fetchStatements(req.user.email)
   .then(results=>{
-    console.log(results.status)
-    res.json({dtatus:200,data:data});
+    res.json({dtatus:200,data:results});
   })
   .catch(error=>{
-    console.log(error)
     res.json({dtatus:202,data:[]});
   })
 });
