@@ -12,7 +12,7 @@ module.exports =  class users {
       value:value
     },(err,result,fields)=>{
       if(err){
-        reject(error)
+        reject(err)
       }else{
         resolve({status:200,msg:results})
       }
@@ -27,7 +27,7 @@ module.exports =  class users {
       password: password
     },(err,results)=>{
       if(err){
-        throw error
+        throw err
       }else{
         return {status:200,msg:results}
       }
@@ -40,7 +40,7 @@ module.exports =  class users {
         email: email
     }, (err, resutls)=> {
       if (err){
-        throw error
+        throw err
       } else {
         return {status:200, msg:resutls}
       }
