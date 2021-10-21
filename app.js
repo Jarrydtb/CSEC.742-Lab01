@@ -121,6 +121,7 @@ app.get('/statementspage', ensureAuthenticated, (req,res) => {
   res.render('statements',{name:sessions.name});
 });
 
+
 app.get('/settings', ensureAuthenticated, (req,res)=>{
   res.render('settings')
 })
