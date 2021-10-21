@@ -10,7 +10,10 @@ var cookieParser = require('cookie-parser');
 //Custom File imports
 
 //Inpute Validation
-var Validation = require('./security/inputValidation.js')
+var validationModule = require('./security/inputValidation.js')
+const Validation = new validationModule();
+
+
 //SQL Files
 var db = require('./db/initdb.js')//TODO CLose connection per request.
 var userDB = require('./db/users.js')
