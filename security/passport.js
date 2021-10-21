@@ -42,6 +42,7 @@ module.exports = function(passport){
   passport.deserializeUser(function(id, done) {
     User.userFindById(id)
     .then(data=>{
+      console.log("data: ", JSON.strinigy(data))
       if(data.results.length>0){return done(null,false,{ msg: 'failed' })}
       console.log(data.results[0])
       return done(err, data.results[0]);
