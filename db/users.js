@@ -33,7 +33,7 @@ userFindById(value){
 
   addNew(name, email, password){
     return new Promise((resolve,reject)=>{
-      pool.query("INSERT INTO users (name, email, password, account_type) VALUES(?, ?, ?, customer)",[
+      pool.query("INSERT INTO users (name, email, password, account_type) VALUES(?, ?, ?, 'customer')",[
         name,
         email,
         password
