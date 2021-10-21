@@ -101,10 +101,6 @@ app.get('/transferfunds', (req, res) => {                    // Transfer funds P
       }
       res.render('transferFunds',{data:data});
     });
-
-	}else{
-		res.render('login');
-	}
 });
 
 app.get('/statementspage', ensureAuthenticated, (req,res) => {
