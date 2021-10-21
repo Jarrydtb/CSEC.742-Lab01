@@ -39,9 +39,9 @@ module.exports = class inputValidation {
       .then(data=>{
         if(amount>0 && amount <= data.results){
           console.log("Illegal Operation")
-          resolve(false)
+          reject(false)
         }else{
-          reject(true)
+          resolve(true)
         }
       })
       .catch(err=>{
