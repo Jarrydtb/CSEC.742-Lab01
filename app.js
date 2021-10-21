@@ -9,11 +9,11 @@ var cookieParser = require('cookie-parser');
 
 //Custom File imports
 //SQL Files
-import InitDB from './db/initdb.js'
-// const InitDB = require('./db/initdb.js')//TODO CLose connection per request.
-const User = require('./db/users.js')
-const Accounts = require('./db/accounts.js')
-const Statements = require('./db/accounts.js')
+var initDB = require('./db/initdb.js')//TODO CLose connection per request.
+var userDB = require('./db/users.js')
+var accountsDB = require('./db/accounts.js')
+var statementsDB = require('./db/accounts.js')
+
 
 app.set('view engine', 'ejs');
 
@@ -44,6 +44,14 @@ app.listen(3000, (req,res) => console.log("Server Listening"));
 /* ------------------------- MYSQL CONFIGURATIONS ------------------------------- */
 var mysql      = require('mysql');                            //MYSQL DB dependency import
 var MYSQLStore = require('express-mysql-session')(session)   //MYSQL Sessions dependency import
+
+//Create Instances
+const InitDB = new initDB()
+const UserDB = new userDB()
+const AccountsDB = new accountsDB()
+const StatementsDB = new statementsDB()
+
+
 var connection = InitDB.initialize()
 
 
