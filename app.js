@@ -123,8 +123,6 @@ app.get('/transferfunds', ensureAuthenticated,(req, res) => {                   
     // });
     Accounts.getBalance(req.user.email)
     .then(data=>{
-      console.log("Hello")
-      console.log(data)
       res.render('transferFunds',{data:data});
     })
     .catch(err=>{
