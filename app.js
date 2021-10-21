@@ -145,7 +145,11 @@ app.post('/api/auth',(req, res, next) => {
   passport.authenticate('local',{
     successRedirect: '/dashboard',
     failureRedirect: '/login',
-  })(req,res,next)
+  }), (req,res,next)=>{
+    req.session.save(() => {
+      res.redirect('/dashboard');
+    })
+  }
 });
 
 //Login API - Admin user
