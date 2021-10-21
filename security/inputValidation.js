@@ -1,12 +1,22 @@
 module.exports = class inputValidation {
 
-  validateEmail(email){
+  validateEmail(email){//returns true or false
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
-  validatePassword(){
-
+  validatePassword(){//returns hashed password
+    return new Promise((resolve,reject)=>{
+      bcrypt
+        	 .hash(req.body.password,10)
+           .then(hashed =>{resolve(hashed)})
+           .catch(err =>{reject(err)})
+    })
   }
+  validateString(string){//validates input string
+    const re = ^(?!\s*$).+;
+    return re.test(String(string))
+  }
+  
   validateSearch(){
 
   }
@@ -18,10 +28,6 @@ module.exports = class inputValidation {
     }
   }
   validateTransferAmount(){
-
-  }
-  passwordHasher(){
-    //use bcrypt with salt 10
 
   }
 }

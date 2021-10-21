@@ -248,14 +248,23 @@ app.post('/api/update/name', ensureAuthenticated, (req,res)=>{
 app.post('/api/user/add', ensureAuthenticated, (req,res)=>{
   // TODO: ADD INPUT VALIDATION HERE & Password HASH:
   // Add user to DB
-  User.addnew(connection, req.body.name, req.body.email,req.body.password)
-  .then(results=>{
-    console.log(results.status)
-    res.json({status:200,msg:"user created successfully"})
+  Validation.validatePassword(req.body.password)
+  .then(hashedPassword=>{
+    if(!Validation.validateEmail(req.body.email)||!Validation.validateString(req.body.name)){throw "error"}
+
+    User.addnew(connection, req.body.name, req.body.email, hashedPassword)
+    .then(results=>{
+      console.log(results.status)
+      res.json({status:200,msg:"user created successfully"})
+    })
+    .catch(error=>{
+      console.log(error)
+      res.json({status:512,msg:"user creation failed"})
+    })
   })
   .catch(error=>{
     console.log(error)
     res.json({status:512,msg:"user creation failed"})
-  })
+  });
 
 })
