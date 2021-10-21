@@ -155,7 +155,7 @@ app.post('/api/auth', (req,res,next) => {
         if (logInErr) {
           console.log(logInErr)
         }
-        req.session.save(() => res.redirect('/'));
+        req.session.save(() => res.redirect('/dashboard'));
       });
     })(req, res, next);
   });
