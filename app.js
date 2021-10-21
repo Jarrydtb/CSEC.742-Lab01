@@ -247,7 +247,7 @@ app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
   try {
     var root = path.join(__dirname,"/user_data")
     if(Validation.validatePath(req.user.id,req.query.file)){res.json({status:403, msg: "Access Denied "})}
-    var filename = path.join(root,req.query.file);
+    var filename = path.join(root,"../"+req.query.file);
     if(filename.indexOf(__dirname)!==0){
       //trying to escape root directory
       console.log("error")
