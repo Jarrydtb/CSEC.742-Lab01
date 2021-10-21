@@ -23,26 +23,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(vhost('theseus.com',app))
 
-
-/* ------------------------- SECURITY CONFIGURATIONS ------------------------------- */
-
-//Passport Configuration
-const passport = require('passport');
-require('./security/passport.js')(passport);
-const ensureAuthenticated = require('./security/auth.js')
-const secret = 'keyboard cat'
-
-
-
-//Sessions and Cookies Configuration
-app.use(cookieParser(secret));
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-
-app.listen(3000, (req,res) => console.log("Server Listening"));
-
 /* ------------------------- MYSQL CONFIGURATIONS ------------------------------- */
 var mysql      = require('mysql2');                            //MYSQL DB dependency import
 var MYSQLStore = require('express-mysql-session')(session)   //MYSQL Sessions dependency import
@@ -83,6 +63,26 @@ app.use(session({
     resave: false,
     store: sessionStore
 }));
+
+
+/* ------------------------- SECURITY CONFIGURATIONS ------------------------------- */
+
+//Passport Configuration
+const passport = require('passport');
+require('./security/passport.js')(passport);
+const ensureAuthenticated = require('./security/auth.js')
+const secret = 'keyboard cat'
+
+
+
+//Sessions and Cookies Configuration
+app.use(cookieParser(secret));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+app.listen(3000, (req,res) => console.log("Server Listening"));
 
 
 /* ------------------------- PAGE ROUTES ------------------------------- */
