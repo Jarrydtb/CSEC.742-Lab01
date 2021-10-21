@@ -48,16 +48,19 @@ userFindById(value){
   }
 
   updateName(conn,name,email){
-    pool.query("UPDATE users SET name = :name WHERE email= :email; SELECT name FROM users WHERE email = :email;",{
-        name: name,
-        email: email
-    }, (err, resutls)=> {
-      if (err){
-        throw err
-      } else {
-        return {status:200, msg:resutls}
-      }
-  })
+    return new Promise((resolve,reject)=>{
+      pool.query("UPDATE users SET name = :name WHERE email= :email; SELECT name FROM users WHERE email = :email;",{
+          name: name,
+          email: email
+      }, (err, resutls)=> {
+        if(err){
+          reject(err)
+        }else{
+          resolve({status:200,results})
+        }
+      })
+    })
   }
+
 
 }

@@ -267,7 +267,7 @@ app.post('/api/user/add', ensureAuthenticated, (req,res)=>{
   .then(hashedPassword=>{
     if(!Validation.validateEmail(req.body.email)||!Validation.validateString(req.body.name)){throw "error"}
 
-    User.addnew(req.body.name, req.body.email, hashedPassword)
+    User.addNew(req.body.name, req.body.email, hashedPassword)
     .then(results=>{
       console.log(results.status)
       res.json({status:200,msg:"user created successfully"})
