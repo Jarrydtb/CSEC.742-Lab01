@@ -29,10 +29,25 @@ module.exports = class inputValidation {
       return false
     }
   }
-  validateTransferAmount(){
-
+  validateTransferAmount(email,amount){
+    return new Promise((resolve,reject)=>{
+      var accountsDB = require('./db/accounts.js')
+      var Account = new accountsDB()
+      Account.getBalance(email)
+      .then(data=>{
+        console.log(data)
+        if(amount>0 && amount <= data.results){
+          resolve(false)
+        }else{
+          reject(true)
+        }
+      })
+      .catch(err=>{
+        reject(false)
+      })
+    })
   }
-  validateTransferAmount(){
+  validateTransferRecipient(){
 
   }
 }

@@ -3,6 +3,21 @@ const pool = require('./initdb.js')
 
 module.exports = class accounts {
 
+  getBalance(email){
+    return new Promise((resolve,reject)=>{
+      pool.execute(
+        "SELECT amount FROM accounts WHERE email = ?;",[
+          email
+        ],(err,result,fields)=>{
+          if(err){
+            reject(err)
+          }else{
+            resolve({status:200,msg:results})
+          }
+      })
+    })
+  }
+
   balanceUpdate(recipient,sender,amount){
     return new Promise((resolve,reject)=>{
       pool.execute(
