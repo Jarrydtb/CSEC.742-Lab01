@@ -7,7 +7,7 @@ module.exports =  class users {
 
     return new Promise((resolve,reject)=>{
     console.log(value)
-    conn.execute("SELECT * FROM users WHERE ? = ?",[
+    conn.execute("SELECT * FROM `users` WHERE ? = ?",[
       key,      // email, id, name etc...
       value,    // example@example.com etc...
     ],(err,results,fields)=>{
