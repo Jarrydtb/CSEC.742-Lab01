@@ -201,16 +201,17 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
   //TODO amount validation and email validation (exists)
   Validation.validateTransferAmount(req.user.email,req.body.amount)
   .then(result=>{
-
-    Accounts.balanceUpdate(req.body.recipient,req.user.email,req.body.amount)
-    .then(result=>{
-      res.redirect(301,'/transferFunds')
-    })
-    .catch(err=>{
-      console.log(err)
-      res.redirect(301,'/transferFunds')
-    })
-
+    console.log(result)
+    if(result){
+      Accounts.balanceUpdate(req.body.recipient,req.user.email,req.body.amount)
+      .then(result=>{
+        res.redirect(301,'/transferFunds')
+      })
+      .catch(err=>{
+        console.log(err)
+        res.redirect(301,'/transferFunds')
+      })
+    }
   })
   .catch(err=>{
     console.log(err)
