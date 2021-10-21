@@ -47,9 +47,9 @@ var MYSQLStore = require('express-mysql-session')(session)   //MYSQL Sessions de
 
 //Create Instances
 const InitDB = new initDB()
-const UserDB = new userDB()
-const AccountsDB = new accountsDB()
-const StatementsDB = new statementsDB()
+const User = new userDB()
+const Accounts = new accountsDB()
+const Statements = new statementsDB()
 
 
 var connection = InitDB.initialize()
