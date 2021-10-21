@@ -32,4 +32,7 @@ module.exports = class inputValidation {
   validateTransferAmount(){
 
   }
+  validateTransferAmount(){
+
+  }
 }

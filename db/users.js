@@ -33,11 +33,11 @@ userFindById(value){
 
   addNew(name, email, password){
     return new Promise((resolve,reject)=>{
-      pool.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
-        name: name,
-        email: email,
-        password: password
-      },(err,results)=>{
+      pool.query("INSERT INTO users (name, email, password) VALUES(?, ?, ?)",[
+        name,
+        email,
+        password
+      ],(err,results)=>{
         if(err){
           reject(err)
         }else{
@@ -47,12 +47,13 @@ userFindById(value){
     })
   }
 
-  updateName(conn,name,email){
+  updateName(name,email){
     return new Promise((resolve,reject)=>{
-      pool.query("UPDATE users SET name = :name WHERE email= :email; SELECT name FROM users WHERE email = :email;",{
-          name: name,
-          email: email
-      }, (err, resutls)=> {
+      pool.query("UPDATE users SET name = ? WHERE email= ?; SELECT name FROM users WHERE email = ?;",[
+          name,
+          email,
+          email
+      ], (err, resutls)=> {
         if(err){
           reject(err)
         }else{
