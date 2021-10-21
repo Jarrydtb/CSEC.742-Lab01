@@ -13,7 +13,7 @@ module.exports = class accounts {
             console.log(err)
             reject(err)
           }else{
-            resolve({status:200,msg:results})
+            resolve({status:200,msg:result})
           }
       })
     })
