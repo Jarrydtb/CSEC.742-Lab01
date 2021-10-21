@@ -144,7 +144,7 @@ app.get('/admin/dashboard', ensureAuthenticated,(req, res) => {
 app.post('/api/auth', passport.authenticate('local',{
     successRedirect: '/dashboard',
     failureRedirect: '/login',
-  }), (req,res,next) => {
+  }), (req,res) => {
     req.session.save(() => {
       res.redirect('/dashboard');
     })
