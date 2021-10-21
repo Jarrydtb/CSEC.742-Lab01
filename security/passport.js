@@ -34,18 +34,16 @@ module.exports = function(passport){
 
 
   passport.serializeUser(function(user, done) {
-    console.log("serializeUser")
     done(null, user.id);
   });
 
 
 
   passport.deserializeUser(function(id, done) {
-    console.log("DeserializeUser")
-    console.log(id)
     User.userFindById(id)
     .then(data=>{
       if(data.results.length>0){return done(null,false,{ msg: 'failed' })}
+      console.log(data.results[0])
       return done(err, data.results[0]);
     });
   });
