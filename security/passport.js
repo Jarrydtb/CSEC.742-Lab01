@@ -12,7 +12,7 @@ module.exports = function(passport){
   passport.use(new LocalStrategy({usernameField: 'email', passReqToCallback: true},(req, email, password, done) => {
 
 
-    User.userFind(req.conn,"email",email)
+    User.userFindByEmail(req.conn,email)
     .then(data=>{
       if(!data.results.length>0){return done(null, false, { msg: 'Email is not registered' })}
       bcrypt.compare(password, data.results[0].password, (err,isMatch) => {
@@ -39,7 +39,7 @@ module.exports = function(passport){
 
 
   passport.deserializeUser(function(id, done) {
-    User.userFind("id",id,function(err, user) {
+    User.userFindById("id",id,function(err, user) {
       done(err, user);
     });
   });

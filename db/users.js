@@ -3,7 +3,7 @@ const mysql = require('mysql')
 
 module.exports =  class users {
 
-  userFind(conn,key,value){
+  userFindByEmail(conn,value){
 
     return new Promise((resolve,reject)=>{
     console.log(value)
@@ -19,6 +19,23 @@ module.exports =  class users {
     })
 
   })
+}
+
+userFindById(conn,value){
+
+  return new Promise((resolve,reject)=>{
+  console.log(value)
+  conn.execute("SELECT * FROM `users` WHERE `id` = ?",[
+    value,    // example@example.com etc...
+  ],(err,results,fields)=>{
+    if(err){
+      reject(err)
+    }else{
+      resolve({status:200,results})
+    }
+  })
+
+})
 }
 
   addNew(conn,name, email, password){
