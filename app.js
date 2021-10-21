@@ -33,7 +33,6 @@ const Accounts = new accountsDB()
 const Statements = new statementsDB()
 
 
-
 //MYSQL Sessions Config
 var sessionStore = new MYSQLStore({
   host     : 'localhost',
@@ -90,7 +89,7 @@ app.get('/', (req, res) => {                                    // Landing Page
 });
 
 app.post('/logout', (req, res) => {
-  console.log("logout")                     // Logout Route
+  // Logout Route
   req.session.destroy((err) => {
         if(err) {
             return console.log(err);
@@ -116,6 +115,8 @@ app.get('/transferfunds', (req, res) => {                    // Transfer funds P
       }
       res.render('transferFunds',{data:data});
     });
+
+
 });
 
 app.get('/statementspage', ensureAuthenticated, (req,res) => {
@@ -148,7 +149,7 @@ app.post('/api/auth', (req,res,next) => {
       }
       console.log('user', user);
       if (!user) {
-        return res.redirect('/users/login');
+        return res.redirect('/login');
       }
       req.logIn(user, (logInErr) => {
         if (logInErr) {
@@ -161,20 +162,44 @@ app.post('/api/auth', (req,res,next) => {
 
 //Login API - Admin user
 app.post('/api/admin/login', (request, response) => {
-  passport.authenticate('local',{
-    successRedirect: '/admin/dashboard',
-    failureRedirect: '/login',
-  })(req,res,next)
+  passport.authenticate('local',(err,user) =>{
+    if (err) {
+        console.log(err);
+      }
+      console.log('user', user);
+      if (!user) {
+        return res.redirect('/login');
+      }
+      req.logIn(user, (logInErr) => {
+        if (logInErr) {
+          console.log(logInErr)
+        }
+        req.session.save(() => res.redirect('/admin/dashboard'));
+      });
+    })(req, res, next);
 });
 
 //Transfer funds API
 app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
   //TODO amount validation and email validation (exists)
-  connection.query("UPDATE accounts SET balance = balance +" + req.body.amount + " WHERE email = '" + req.body.recipient + "';" +
-  "UPDATE accounts SET balance = balance - " + req.body.amount + " WHERE email='" + sessions.email + "'",(err,result,fields)=>{
-    console.log(result)
+  Accounts.balanceUpdate(req.body.recipient,req.user.email,req.body.amount)
+  .then(result=>{
     res.redirect(301,'/transferFunds')
-  });
+  })
+  .catch(err=>{
+    console.log(err)
+    res.redirect(301,'/transferFunds')
+  })
+
+
+  // END 
+  // connection.query("UPDATE accounts SET balance = balance +" + req.body.amount + " WHERE email = '" + req.body.recipient + "';" +
+  // "UPDATE accounts SET balance = balance - " + req.body.amount + " WHERE email='" + sessions.email + "'",(err,result,fields)=>{
+  //   console.log(result)
+  //   res.redirect(301,'/transferFunds')
+  // });
+
+
 });
 
 //Fetch Statements API

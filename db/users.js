@@ -4,10 +4,22 @@ const pool = require('./initdb.js')
 module.exports =  class users {
 
   userFindByEmail(value){
-
     return new Promise((resolve,reject)=>{
-    pool.execute("SELECT * FROM `users` WHERE `email` = ?",[
-  //    key,      // email, id, name etc...
+      pool.execute("SELECT * FROM `users` WHERE `email` = ?",[
+        value,    // example@example.com etc...
+      ],(err,results,fields)=>{
+        if(err){
+          reject(err)
+        }else{
+          resolve({status:200,results})
+        }
+      })
+    })
+  }
+
+userFindById(value){
+  return new Promise((resolve,reject)=>{
+    pool.execute("SELECT * FROM `users` WHERE `id` = ?",[
       value,    // example@example.com etc...
     ],(err,results,fields)=>{
       if(err){
@@ -16,24 +28,7 @@ module.exports =  class users {
         resolve({status:200,results})
       }
     })
-
   })
-}
-
-userFindById(value){
-
-  return new Promise((resolve,reject)=>{
-  pool.execute("SELECT * FROM `users` WHERE `id` = ?",[
-    value,    // example@example.com etc...
-  ],(err,results,fields)=>{
-    if(err){
-      reject(err)
-    }else{
-      resolve({status:200,results})
-    }
-  })
-
-})
 }
 
   addNew(conn,name, email, password){
