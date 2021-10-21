@@ -35,7 +35,7 @@ module.exports = class accounts {
             if(err){
               reject(err)
             }else{
-              resolve({status:200,msg:results})
+              resolve({status:200,data:result})
             }
         })
       })
