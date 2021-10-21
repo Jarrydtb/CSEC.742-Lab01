@@ -13,10 +13,10 @@ module.exports = class inputValidation {
     })
   }
   validateString(string){//validates input string
-    const re = ^(?!\s*$).+;
+    const re = /^(?!\s*$).+/;
     return re.test(String(string))
   }
-  
+
   validateSearch(){
 
   }
