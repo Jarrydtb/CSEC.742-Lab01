@@ -44,7 +44,7 @@ module.exports = function(passport){
     .then(data=>{
       if(!data.results.length>0){return done(null,false,{ msg: 'failed' })}
       console.log(data.results[0])
-      done(err, data.results[0]);
+      done(data.status, data.results[0]);
     })
     .catch(err=>{console.log(err)});
   });
