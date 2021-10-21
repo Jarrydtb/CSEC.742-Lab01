@@ -270,16 +270,19 @@ app.post('/api/user/add', ensureAuthenticated, (req,res)=>{
     User.addNew(req.body.name, req.body.email, hashedPassword)
     .then(results=>{
       console.log(results.status)
-      res.json({status:200,msg:"user created successfully"})
+      //res.json({status:200,msg:"user created successfully"})
+      res.render('/admin/dashboard')
     })
     .catch(error=>{
       console.log(error)
-      res.json({status:512,msg:"user creation failed"})
+      // res.json({status:512,msg:"user creation failed"})
+      res.render('/admin/dashboard')
     })
   })
   .catch(error=>{
     console.log(error)
-    res.json({status:512,msg:"user creation failed"})
+    // res.json({status:512,msg:"user creation failed"})
+    res.render('/admin/dashboard')
   });
 
 })
