@@ -41,7 +41,7 @@ module.exports = function(passport){
 
 
   passport.deserializeUser(function(id, done) {
-    console.log("DeserializeUser"
+    console.log("DeserializeUser")
     User.userFindById(id)
     .then(data=>{
       if(data.results.length>0){return done(null,false,{ msg: 'failed' })}
