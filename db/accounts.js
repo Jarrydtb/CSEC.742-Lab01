@@ -1,4 +1,4 @@
-class accounts {
+module.exports = class accounts {
   balanceUpdate(conn,recipient,sender,amount){
     conn.query(
       "UPDATE accounts SET balance = balance + :amount WHERE email = :recipient;" +
@@ -16,5 +16,3 @@ class accounts {
     })
   }
 }
-
-export default accounts

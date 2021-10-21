@@ -1,6 +1,5 @@
-class statements {
+module.exports = class statements {
   fetchStatements(){
 
   }
 }
-export default statements

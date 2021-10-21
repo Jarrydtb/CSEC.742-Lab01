@@ -1,4 +1,4 @@
-class users {
+module.exports =  class users {
 
   userFind(conn,key,value){
     conn.query("SELECT * FROM users WHERE :key = :value",{
@@ -41,6 +41,3 @@ class users {
   }
 
 }
-
-
-export default users
