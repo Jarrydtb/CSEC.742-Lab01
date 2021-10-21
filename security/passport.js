@@ -14,8 +14,8 @@ module.exports = function(passport){
 
     User.userFind(req.conn,"email",email)
     .then(data=>{
+      console.log(data)
       if(data.results.length>0){return done(null, false, { msg: 'Email is not registered' })}
-      console.log(data.results)
       bcrypt.compare(password, user.password,(err,isMatch)=>{
           if(err) throw err;
           if(isMatch){
