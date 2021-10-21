@@ -1,13 +1,13 @@
-const mysql = require('mysql')
-
+const mysql = require('mysql2')
+const pool = require('./initdb.js')
 
 module.exports =  class users {
 
-  userFindByEmail(conn,value){
+  userFindByEmail(value){
 
     return new Promise((resolve,reject)=>{
     console.log(value)
-    conn.execute("SELECT * FROM `users` WHERE `email` = ?",[
+    pool.execute("SELECT * FROM `users` WHERE `email` = ?",[
   //    key,      // email, id, name etc...
       value,    // example@example.com etc...
     ],(err,results,fields)=>{
@@ -21,10 +21,10 @@ module.exports =  class users {
   })
 }
 
-userFindById(conn,value){
+userFindById(value){
 
   return new Promise((resolve,reject)=>{
-  conn.execute("SELECT * FROM `users` WHERE `id` = ?",[
+  pool.execute("SELECT * FROM `users` WHERE `id` = ?",[
     value,    // example@example.com etc...
   ],(err,results,fields)=>{
     if(err){
@@ -38,7 +38,7 @@ userFindById(conn,value){
 }
 
   addNew(conn,name, email, password){
-    conn.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
+    pool.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
       name: name,
       email: email,
       password: password
@@ -52,7 +52,7 @@ userFindById(conn,value){
   }
 
   updateName(conn,name,email){
-    conn.query("UPDATE users SET name = :name WHERE email= :email; SELECT name FROM users WHERE email = :email;",{
+    pool.query("UPDATE users SET name = :name WHERE email= :email; SELECT name FROM users WHERE email = :email;",{
         name: name,
         email: email
     }, (err, resutls)=> {
