@@ -3,18 +3,22 @@ const mysql = require('mysql')
 
 module.exports =  class users {
 
-  userFind = new Promise((conn,key,value)=>{
+  userFind = (conn,key,value) => {
+
+    return new Promise((resolve,reject)=>{
+
     conn.query("SELECT * FROM users WHERE :key = :value",{
       key:key,
       value:value
     },(err,result,fields)=>{
       if(err){
-        throw error
+        reject(error)
       }else{
         resolve({status:200,msg:results})
       }
     })
   })
+}
 
   addNew(conn,name, email, password){
     conn.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
