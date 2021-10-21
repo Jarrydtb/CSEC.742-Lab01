@@ -24,7 +24,7 @@ module.exports = class inputValidation {
   }
   validatePath(id,path){
     if(path.split('/')[3]==id){
-      const re = ^src(?:\/[^\/]+(?!\.\.))+\/[^\/]+$;
+      const re = /^src(?:\/[^\/]+(?!\.\.))+\/[^\/]+$/;
       return re.test(String(path).toLowerCase());
     }else{
       return false
