@@ -6,7 +6,6 @@ module.exports =  class users {
   userFindByEmail(value){
 
     return new Promise((resolve,reject)=>{
-    console.log(value)
     pool.execute("SELECT * FROM `users` WHERE `email` = ?",[
   //    key,      // email, id, name etc...
       value,    // example@example.com etc...
