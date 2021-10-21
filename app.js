@@ -104,7 +104,7 @@ app.get('/login', (req, res) => {                             // Login Page
 });
 
 app.get('/dashboard',ensureAuthenticated,(req, res) => {     // Dashboard Page
-	res.render('dashboard',{data: {name:sessions.name}});
+	res.render('dashboard');
 });
 
 app.get('/transferfunds', (req, res) => {                    // Transfer funds Page
