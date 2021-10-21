@@ -8,6 +8,9 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 
 //Custom File imports
+
+//Inpute Validation
+var Validation = require('./security/inputValidation.js')
 //SQL Files
 var db = require('./db/initdb.js')//TODO CLose connection per request.
 var userDB = require('./db/users.js')
@@ -215,14 +218,20 @@ app.get('/api/fetch/statement_list',ensureAuthenticated,(req,res)=>{
 //Download Statement API
 app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
   //TODO Path validation
-  var root = path.join(__dirname,"/user_data")
-
-  var filename = path.join(root,req.query.file);
-  if(filename.indexOf(__dirname)!==0){
-    //trying to escape root directory
+  try {
+    var root = path.join(__dirname,"/user_data")
+    if(Validation.validatePath(req.user.id,req.query.file)){throw "Access Denied"}
+    var filename = path.join(root,req.query.file);
+    if(filename.indexOf(__dirname)!==0){
+      //trying to escape root directory
+      throw "Access Denied "
+    }else{
+      res.download(filename, function(err){
+        if(err){throw "Access Denied"}
+      });
+    }
+  } catch (e) {
     res.json({status:403, msg: "Access Denied "})
-  }else{
-    res.download(filename);
   }
 });
 

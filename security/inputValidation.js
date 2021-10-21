@@ -1,21 +1,26 @@
-export default class inputValidation {
+module.exports = class inputValidation {
 
-  function validateEmail(email){
+  validateEmail(email){
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
-  function validatePassword(){
+  validatePassword(){
 
   }
-  function validateSearch(){
+  validateSearch(){
 
   }
-
-  function validateTransferAmount(){
+  validatePath(id,path){
+    if(path.split('/')[3]==id){
+      return true
+    }else{
+      return false
+    }
+  }
+  validateTransferAmount(){
 
   }
-
-  function passwordHasher(){
+  passwordHasher(){
     //use bcrypt with salt 10
 
   }
