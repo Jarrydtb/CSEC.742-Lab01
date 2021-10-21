@@ -145,20 +145,16 @@ app.post('/api/auth', (req,res,next) => {
 
   passport.authenticate('local',(err,user) =>{
     if (err) {
-        console.log('error on userController.js post /login err', err);
-        return err;
+        console.log(err);
       }
       console.log('user', user);
       if (!user) {
-        req.flash('info');
         return res.redirect('/users/login');
       }
       req.logIn(user, (logInErr) => {
         if (logInErr) {
-          console.log('error on userController.js post /login logInErr', logInErr); return logInErr;
+          console.log(logInErr)
         }
-        // return res.status(200).json(user[0]);
-        req.flash('info', 'Bienvenido');
         req.session.save(() => res.redirect('/'));
       });
     })(req, res, next);
