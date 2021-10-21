@@ -112,7 +112,7 @@ app.get('/dashboard',ensureAuthenticated,(req, res) => {     // Dashboard Page
 	res.render('dashboard',{data:req.user});
 });
 
-app.get('/transferfunds', (req, res) => {                    // Transfer funds Page
+app.get('/transferfunds', ensureAuthenticated,(req, res) => {                    // Transfer funds Page
     //TODO: Change to accounts getAccounts function
     // connection.query("SELECT * FROM accounts WHERE email='"+sessions.email + "'",(err,result, fields)=>{
     //   var data = {balance:0}
@@ -123,6 +123,7 @@ app.get('/transferfunds', (req, res) => {                    // Transfer funds P
     // });
     Accounts.getBalance(req.user.email)
     .then(data=>{
+      console.log("Hello")
       console.log(data)
       res.render('transferFunds',{data:data});
     })
