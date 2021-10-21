@@ -4,7 +4,7 @@ const InitDB = new initDB()
 
 module.exports =  class users {
 
-  Promise.userFind(key,value){
+  userFind = Promise((key,value){
     var conn = InitDB.initialize()
     conn.query("SELECT * FROM users WHERE :key = :value",{
       key:key,
@@ -17,7 +17,7 @@ module.exports =  class users {
         return {status:200,msg:results}
       }
     })
-  }
+  })
 
   addNew(conn,name, email, password){
     conn.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
