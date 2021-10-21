@@ -6,6 +6,7 @@ const userDB = require('../db/users.js')
 const User = new userDB()
 
 
+
 module.exports = function(passport){
 
   passport.use(new LocalStrategy({usernameField: 'email'},(email, password, done) => {

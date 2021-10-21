@@ -52,7 +52,7 @@ const Accounts = new accountsDB()
 const Statements = new statementsDB()
 
 
-var connection = InitDB.initialize()
+// var connection = InitDB.initialize()
 
 
 //MYSQL Sessions Config
