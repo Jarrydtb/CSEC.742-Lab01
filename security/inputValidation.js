@@ -6,10 +6,10 @@ module.exports = class inputValidation {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
-  validatePassword(){//returns hashed password
+  validatePassword(passwordString){//returns hashed password
     return new Promise((resolve,reject)=>{
       bcrypt
-        	 .hash(req.body.password,10)
+        	 .hash(passwordString,10)
            .then(hashed =>{resolve(hashed)})
            .catch(err =>{reject(err)})
     })
