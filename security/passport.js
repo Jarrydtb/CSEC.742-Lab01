@@ -42,7 +42,7 @@ module.exports = function(passport){
     console.log("hit")
     User.userFindById(id)
     .then(data=>{
-      if(data.results.length>0){return done(null,false,{ msg: 'failed' })}
+      if(!data.results.length>0){return done(null,false,{ msg: 'failed' })}
       console.log(data.results[0])
       done(err, data.results[0]);
     })
