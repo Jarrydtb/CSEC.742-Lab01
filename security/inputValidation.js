@@ -38,10 +38,10 @@ module.exports = class inputValidation {
       Account.getBalance(email)
       .then(data=>{
         if(amount>0 || amount <= data.results){
+          resolve(true)
+        }else{
           console.log("Illegal Operation")
           reject(false)
-        }else{
-          resolve(true)
         }
       })
       .catch(err=>{
