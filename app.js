@@ -43,7 +43,7 @@ app.use(passport.initialize());
 app.listen(3000, (req,res) => console.log("Server Listening"));
 
 /* ------------------------- MYSQL CONFIGURATIONS ------------------------------- */
-var mysql      = require('mysql');                            //MYSQL DB dependency import
+var mysql      = require('mysql2');                            //MYSQL DB dependency import
 var MYSQLStore = require('express-mysql-session')(session)   //MYSQL Sessions dependency import
 
 //Create Instances

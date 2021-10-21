@@ -1,5 +1,5 @@
-const mysql = require('mysql')
-const connection = mysql.createConnection({                     //MYSQL DB Configuration
+const mysql = require('mysql2')
+const pool = mysql.createPool({                     //MYSQL DB Configuration
   multipleStatements: true,
   host     : 'localhost',
   user     : 'root',
