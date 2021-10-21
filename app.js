@@ -254,10 +254,12 @@ app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
       res.json({status:403, msg: "Access Denied "})
     }else{
       res.download(filename, function(err){
+        console.log("error download")
         res.json({status:403, msg: "Access Denied "})
       });
     }
   } catch (e) {
+    console.log("error catch")
     res.json({status:403, msg: "Access Denied "})
   }
 });
