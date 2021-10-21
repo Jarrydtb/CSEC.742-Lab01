@@ -40,7 +40,6 @@ var sessionStore = new MYSQLStore({
   user     : 'root',
   password : 'TheseusPassword',
   database : 'theseus',
-  clearExpired: true,
   checkExpirationInterval: 900000,
   expiration: 86400000,
   createDatabaseTable: true,
@@ -58,10 +57,10 @@ var sessionStore = new MYSQLStore({
 //Express sessions
 app.use(session({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    saveUninitialized:true,
-    cookie: { secure: false, maxAge: 36000 },
+    cookie: { secure: false, httpOnly:true, maxAge: 36000 },
+    store: sessionStore,
     resave: true,
-    store: sessionStore
+    saveUninitialized:true,
 }));
 
 
