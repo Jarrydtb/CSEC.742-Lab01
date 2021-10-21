@@ -31,17 +31,19 @@ userFindById(value){
   })
 }
 
-  addNew(conn,name, email, password){
-    pool.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
-      name: name,
-      email: email,
-      password: password
-    },(err,results)=>{
-      if(err){
-        throw err
-      }else{
-        return {status:200,results}
-      }
+  addNew(name, email, password){
+    return new Promise((resolve,reject)=>{
+      pool.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
+        name: name,
+        email: email,
+        password: password
+      },(err,results)=>{
+        if(err){
+          reject(err)
+        }else{
+          resolve({status:200,results})
+        }
+      })
     })
   }
 
