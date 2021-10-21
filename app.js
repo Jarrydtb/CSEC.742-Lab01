@@ -113,14 +113,6 @@ app.get('/dashboard',ensureAuthenticated,(req, res) => {     // Dashboard Page
 });
 
 app.get('/transferfunds', ensureAuthenticated,(req, res) => {                    // Transfer funds Page
-    //TODO: Change to accounts getAccounts function
-    // connection.query("SELECT * FROM accounts WHERE email='"+sessions.email + "'",(err,result, fields)=>{
-    //   var data = {balance:0}
-    //   if(result.length>0){
-    //     data.balance = result[0].balance
-    //   }
-    //   res.render('transferFunds',{data:data});
-    // });
     Accounts.getBalance(req.user.email)
     .then(data=>{
       res.render('transferFunds',{data:data.data});
@@ -132,7 +124,7 @@ app.get('/transferfunds', ensureAuthenticated,(req, res) => {                   
 });
 
 app.get('/statementspage', ensureAuthenticated, (req,res) => {
-  res.render('statements',{name:sessions.name});
+  res.render('statements',{name:req.user.name});
 });
 
 
@@ -239,13 +231,15 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
 
 //Fetch Statements API
 app.get('/api/fetch/statement_list',ensureAuthenticated,(req,res)=>{
-  //TODO CHANGE TO STATEMENTS DB FUNCTIONS : fetchStatements()
-  connection.query("SELECT * FROM statements WHERE customer_email='" + sessions.email + "'",function(err,result,fields){
-    if(err) throw err;
-    var data = {statements: result}
-		res.json({dtatus:200,data:data});
-  });
-
+  Statements.fetchStatements(req.user.email)
+  .then(results=>{
+    console.log(results.status)
+    res.json({dtatus:200,data:data});
+  })
+  .catch(error=>{
+    console.log(error)
+    res.json({dtatus:202,data:[]});
+  })
 });
 
 //Download Statement API

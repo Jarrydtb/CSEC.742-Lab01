@@ -24,19 +24,21 @@ module.exports = class inputValidation {
   }
   validatePath(id,path){
     if(path.split('/')[3]==id){
-      return true
+      const re = ^src(?:\/[^\/]+(?!\.\.))+\/[^\/]+$;
+      return re.test(String(path).toLowerCase());
     }else{
       return false
     }
   }
+
   validateTransferAmount(email,amount){
     return new Promise((resolve,reject)=>{
       var accountsDB = require('../db/accounts.js')
       var Account = new accountsDB()
       Account.getBalance(email)
       .then(data=>{
-        console.log(data)
         if(amount>0 && amount <= data.results){
+          console.log("Illegal Operation")
           resolve(false)
         }else{
           reject(true)
@@ -47,7 +49,20 @@ module.exports = class inputValidation {
       })
     })
   }
-  validateTransferRecipient(){
-
+  validateTransferRecipient(selfEmail, recipientEmail){
+    return new Promise((resolve,reject)=>{
+      if(selfEmail!==recipientEmail && validateEmail(recipientEmail)){
+        //Check valid email
+        var userDB = require('../db/users.js')
+        var User = new userDB()
+        User.userFindByEmail(recipientEmail)
+        .then(data=>{
+          if(data.results.length>0){resolve(true)}else{reject(false)}
+        })
+        .catch(err=>{reject(false)})
+      }else{
+        reject(false)
+      }
+    })
   }
 }
