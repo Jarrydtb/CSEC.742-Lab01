@@ -149,7 +149,7 @@ app.post('/api/auth', passport.authenticate('local',{
       res.redirect('/dashboard');
     })
   }
-});
+);
 
 //Login API - Admin user
 app.post('/api/admin/login', (request, response) => {
