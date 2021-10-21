@@ -46,7 +46,8 @@ module.exports = function(passport){
       if(data.results.length>0){return done(null,false,{ msg: 'failed' })}
       console.log(data.results[0])
       return done(err, data.results[0]);
-    });
+    })
+    .catch(err=>{console.log(err)});
   });
 
 }
