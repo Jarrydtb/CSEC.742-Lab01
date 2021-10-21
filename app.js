@@ -135,6 +135,7 @@ app.get('/admin/dashboard', ensureAuthenticated,(req, res) => {
 
 //Login API - Regular user
 app.post('/api/auth',(req, res, next) => {
+  req.conn = connection
   passport.authenticate('local',{
     successRedirect: '/dashboard',
     failureRedirect: '/login',
