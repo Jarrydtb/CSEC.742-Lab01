@@ -15,6 +15,7 @@ var accountsDB = require('./db/accounts.js')
 var statementsDB = require('./db/accounts.js')
 
 
+
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -52,7 +53,7 @@ const Accounts = new accountsDB()
 const Statements = new statementsDB()
 
 
-// var connection = InitDB.initialize()
+var connection = InitDB.initialize()
 
 
 //MYSQL Sessions Config

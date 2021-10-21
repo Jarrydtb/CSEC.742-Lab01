@@ -2,6 +2,10 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 
+const initDb = require('../db/initdb.js')
+const InitDb = new initDb()
+const conn = InitDB.initialize()
+
 const userDB = require('../db/users.js')
 const User = new userDB()
 
@@ -10,7 +14,7 @@ const User = new userDB()
 module.exports = function(passport){
 
   passport.use(new LocalStrategy({usernameField: 'email'},(email, password, done) => {
-    User.userFind("email",email)
+    User.userFind(conn,"email",email)
     .then(user=>{
       if(user.length[0]){return done(null, false, { msg: 'Email is not registered' })}
       bcrypt.compare(password,user.password,(err,isMatch)=>{
@@ -22,6 +26,7 @@ module.exports = function(passport){
           }
       });
     })
+    .then( InitDB.end() )
     .catch(err => console.log(err));
   }));
 

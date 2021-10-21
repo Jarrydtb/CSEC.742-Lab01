@@ -1,11 +1,9 @@
 const mysql = require('mysql')
-const initDB = require('./initdb.js')
-const InitDB = new initDB()
+
 
 module.exports =  class users {
 
-  userFind = new Promise((key,value)=>{
-    var conn = InitDB.initialize()
+  userFind = new Promise((conn,key,value)=>{
     conn.query("SELECT * FROM users WHERE :key = :value",{
       key:key,
       value:value
@@ -13,7 +11,6 @@ module.exports =  class users {
       if(err){
         throw error
       }else{
-        InitDB.end()
         resolve({status:200,msg:results})
       }
     })
