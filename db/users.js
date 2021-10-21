@@ -3,18 +3,20 @@ const mysql = require('mysql2')
 
 module.exports =  class users {
 
-  userFind = (conn,key,value) => {
+  async userFind(conn,key,value){
 
-    return new Promise((resolve,reject)=>{
+    const promisePool = conn.promise();
+   // query database using promises
 
-    conn.query("SELECT * FROM users WHERE :key = :value",{
+
+   const [rows,fields] = await promisePool.query("SELECT * FROM users WHERE :key = :value",{
       key:key,
       value:value
     },(err,result,fields)=>{
       if(err){
-        reject(error)
+        throw(error)
       }else{
-        resolve({status:200,msg:results})
+        return({status:200,msg:results})
       }
     })
   })
