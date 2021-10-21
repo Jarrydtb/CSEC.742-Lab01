@@ -31,7 +31,7 @@ module.exports = class inputValidation {
   }
   validateTransferAmount(email,amount){
     return new Promise((resolve,reject)=>{
-      var accountsDB = require('./db/accounts.js')
+      var accountsDB = require('../db/accounts.js')
       var Account = new accountsDB()
       Account.getBalance(email)
       .then(data=>{
