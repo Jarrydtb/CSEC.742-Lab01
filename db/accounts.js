@@ -10,6 +10,7 @@ module.exports = class accounts {
           email
         ],(err,result,fields)=>{
           if(err){
+            console.log(err)
             reject(err)
           }else{
             resolve({status:200,msg:results})
