@@ -37,7 +37,7 @@ module.exports = class inputValidation {
       var Account = new accountsDB()
       Account.getBalance(email)
       .then(data=>{
-        if(amount>0 && amount <= data.results){
+        if(amount>0 || amount <= data.results){
           console.log("Illegal Operation")
           reject(false)
         }else{

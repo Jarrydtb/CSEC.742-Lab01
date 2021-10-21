@@ -211,6 +211,8 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
         console.log(err)
         res.redirect(302,'/transferfunds')
       })
+    }else{
+      res.redirect(302,'/transferfunds')
     }
   })
   .catch(err=>{
