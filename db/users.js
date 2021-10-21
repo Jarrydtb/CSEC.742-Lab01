@@ -19,8 +19,7 @@ module.exports =  class users {
         return({status:200,msg:results})
       }
     })
-  })
-}
+  }
 
   addNew(conn,name, email, password){
     conn.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
