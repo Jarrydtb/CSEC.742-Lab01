@@ -14,7 +14,7 @@ module.exports =  class users {
         throw error
       }else{
         InitDB.end()
-        return {status:200,msg:results}
+        resolve({status:200,msg:results})
       }
     })
   })
