@@ -141,11 +141,10 @@ app.get('/admin/dashboard', ensureAuthenticated,(req, res) => {
 /* ------------------------- API ROUTES ------------------------------- */
 
 //Login API - Regular user
-app.post('/api/auth',(req, res, next) => {
-  passport.authenticate('local',{
+app.post('/api/auth', passport.authenticate('local',{
     successRedirect: '/dashboard',
     failureRedirect: '/login',
-  }), (req,res,next)=>{
+  }), (req,res,next) => {
     req.session.save(() => {
       res.redirect('/dashboard');
     })
