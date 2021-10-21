@@ -104,7 +104,7 @@ app.get('/login', (req, res) => {                             // Login Page
 });
 
 app.get('/dashboard',ensureAuthenticated,(req, res) => {     // Dashboard Page
-  console.log(req.sessions);
+  console.log(user)
 	res.render('dashboard');
 });
 
