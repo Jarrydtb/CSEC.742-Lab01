@@ -9,7 +9,7 @@ const User = new userDB()
 
 module.exports = function(passport){
 
-  passport.use(new LocalStrategy({usernameField: 'email'},(req, email, password, done) => {
+  passport.use(new LocalStrategy({usernameField: 'email', passReqToCallback: true},(req, email, password, done) => {
 
 
     User.userFind(req.conn,"email",email)
