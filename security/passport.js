@@ -17,7 +17,6 @@ module.exports = function(passport){
     .then(data=>{
       if(!data.results.length>0){return done(null, false, { msg: 'Email is not registered' })}
       bcrypt.compare(password, data.results[0].password, (err,isMatch) => {
-        console.log(err)
           if(err) throw err;
           if(isMatch){
             return done(null,data.results[0]);
@@ -42,9 +41,7 @@ module.exports = function(passport){
   passport.deserializeUser(function(id, done) {
     User.userFindById(id)
     .then(data=>{
-      console.log("data: ", JSON.stringify(data))
       if(data.results.length>0){return done(null,false,{ msg: 'failed' })}
-      console.log(data.results[0])
       return done(err, data.results[0]);
     })
     .catch(err=>{console.log(err)});
