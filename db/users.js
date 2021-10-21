@@ -4,7 +4,7 @@ const InitDB = new initDB()
 
 module.exports =  class users {
 
-  userFind(key,value){
+  Promise.userFind(key,value){
     var conn = InitDB.initialize()
     conn.query("SELECT * FROM users WHERE :key = :value",{
       key:key,
