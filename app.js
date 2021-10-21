@@ -250,18 +250,16 @@ app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
     var filename = path.join(root,"../"+req.query.file);
     if(filename.indexOf(__dirname)!==0){
       //trying to escape root directory
-      console.log("error")
       res.json({status:403, msg: "Access Denied "})
     }else{
       console.log(filename)
       res.download(filename, function(err){
-        console.log(err)
-        console.log("error download")
-        res.json({status:403, msg: "Access Denied "})
+        if(err){
+              res.json({status:403, msg: "Access Denied "})
+        }
       });
     }
   } catch (e) {
-    console.log("error catch")
     res.json({status:403, msg: "Access Denied "})
   }
 });
