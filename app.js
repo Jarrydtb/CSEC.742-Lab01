@@ -37,6 +37,7 @@ const secret = 'keyboard cat'
 //Sessions and Cookies Configuration
 app.use(cookieParser(secret));
 app.use(passport.initialize());
+app.user(passport.session());
 
 
 
