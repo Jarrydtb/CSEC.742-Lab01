@@ -202,10 +202,21 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
   Validation.validateTransferAmount(req.user.email,req.body.amount)
   .then(result=>{
     if(result){
-      Accounts.balanceUpdate(req.body.recipient,req.user.email,req.body.amount)
+      Validation.validateTransferRecipient(req.user.email,req.body.recipient)
       .then(result=>{
-        console.log(result)
-        res.redirect(302,'/transferfunds')
+        if(result){
+          Accounts.balanceUpdate(req.body.recipient,req.user.email,req.body.amount)
+          .then(result=>{
+            console.log(result)
+            res.redirect(302,'/transferfunds')
+          })
+          .catch(err=>{
+            console.log(err)
+            res.redirect(302,'/transferfunds')
+          })
+        }else{
+          res.redirect(302,'/transferfunds')
+        }
       })
       .catch(err=>{
         console.log(err)
