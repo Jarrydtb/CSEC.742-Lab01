@@ -107,7 +107,7 @@ app.get('/dashboard',ensureAuthenticated,(req, res) => {     // Dashboard Page
 });
 
 app.get('/transferfunds', (req, res) => {                    // Transfer funds Page
-    //TODO: Change to accounts balanceUpdate function
+    //TODO: Change to accounts getAccounts function
     connection.query("SELECT * FROM accounts WHERE email='"+sessions.email + "'",(err,result, fields)=>{
       var data = {balance:0}
       if(result.length>0){
@@ -115,8 +115,6 @@ app.get('/transferfunds', (req, res) => {                    // Transfer funds P
       }
       res.render('transferFunds',{data:data});
     });
-
-
 });
 
 app.get('/statementspage', ensureAuthenticated, (req,res) => {
@@ -192,7 +190,7 @@ app.post('/api/transferfunds',ensureAuthenticated,(req,res)=>{
   })
 
 
-  // END 
+  // END
   // connection.query("UPDATE accounts SET balance = balance +" + req.body.amount + " WHERE email = '" + req.body.recipient + "';" +
   // "UPDATE accounts SET balance = balance - " + req.body.amount + " WHERE email='" + sessions.email + "'",(err,result,fields)=>{
   //   console.log(result)
