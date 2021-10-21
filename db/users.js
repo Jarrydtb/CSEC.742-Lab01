@@ -1,25 +1,24 @@
-const mysql = require('mysql2')
+const mysql = require('mysql')
 
 
 module.exports =  class users {
 
-  async userFind(conn,key,value){
+  userFind(conn,key,value){
 
-    const promisePool = conn.promise();
-   // query database using promises
+    return new Promise((resolve,reject)=>{
 
-
-   const [rows,fields] = await promisePool.query("SELECT * FROM users WHERE :key = :value",{
+    conn.query("SELECT * FROM users WHERE :key = :value",{
       key:key,
       value:value
     },(err,result,fields)=>{
       if(err){
-        throw(error)
+        reject(error)
       }else{
-        return({status:200,msg:results})
+        resolve({status:200,msg:results})
       }
     })
-  }
+  })
+}
 
   addNew(conn,name, email, password){
     conn.query("INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",{
