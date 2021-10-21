@@ -6,7 +6,7 @@ module.exports = class accounts {
   getBalance(email){
     return new Promise((resolve,reject)=>{
       pool.execute(
-        "SELECT amount FROM accounts WHERE email = ?;",[
+        "SELECT balance FROM accounts WHERE email = ?;",[
           email
         ],(err,result,fields)=>{
           if(err){
