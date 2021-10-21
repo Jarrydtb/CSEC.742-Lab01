@@ -21,7 +21,7 @@ module.exports = class accounts {
 
   balanceUpdate(recipient,sender,amount){
     return new Promise((resolve,reject)=>{
-      poo.execute("UPDATE accounts SET balance = balance + ? WHERE email = ?;",[
+      pool.execute("UPDATE accounts SET balance = balance + ? WHERE email = ?;",[
         amount,
         recipient
       ],(err,result,fields)=>{
