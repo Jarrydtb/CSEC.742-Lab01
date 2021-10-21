@@ -20,7 +20,7 @@ module.exports = function(passport){
       });
     })
     .catch(err => console.log(err));
-  });
+  }));
 
 
 
@@ -28,7 +28,7 @@ module.exports = function(passport){
     done(null, user.id);
   });
 
-  
+
 
   passport.deserializeUser(function(id, done) {
     User.userFind("id",id,function(err, user) {
