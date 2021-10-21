@@ -19,10 +19,8 @@ module.exports = function(passport){
         console.log(err)
           if(err) throw err;
           if(isMatch){
-            console.log("Good")
-            return done(null,user);
+            return done(null,data.results[0]);
           }else{
-            console.log("Bad")
             return done(null,false,{ msg: 'Incorrect Password' });
           }
       });
