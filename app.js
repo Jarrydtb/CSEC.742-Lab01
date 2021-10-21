@@ -9,7 +9,7 @@ var cookieParser = require('cookie-parser');
 
 //Custom File imports
 //SQL Files
-var initDB = require('./db/initdb.js')//TODO CLose connection per request.
+var db = require('./db/initdb.js')//TODO CLose connection per request.
 var userDB = require('./db/users.js')
 var accountsDB = require('./db/accounts.js')
 var statementsDB = require('./db/accounts.js')
@@ -47,13 +47,10 @@ var mysql      = require('mysql2');                            //MYSQL DB depend
 var MYSQLStore = require('express-mysql-session')(session)   //MYSQL Sessions dependency import
 
 //Create Instances
-const InitDB = new initDB()
 const User = new userDB()
 const Accounts = new accountsDB()
 const Statements = new statementsDB()
 
-
-var connection = InitDB.initialize()
 
 
 //MYSQL Sessions Config
@@ -135,7 +132,7 @@ app.get('/admin/dashboard', ensureAuthenticated,(req, res) => {
 
 //Login API - Regular user
 app.post('/api/auth',(req, res, next) => {
-  req.conn = connection
+  req.conn = db
   passport.authenticate('local',{
     successRedirect: '/dashboard',
     failureRedirect: '/login',
