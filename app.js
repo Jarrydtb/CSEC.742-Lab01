@@ -58,9 +58,9 @@ var sessionStore = new MYSQLStore({
 //Express sessions
 app.use(session({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    saveUninitialized:false,
-    cookie: { maxAge: 36000 },
-    resave: false,
+    saveUninitialized:true,
+    cookie: { secure: false, maxAge: 36000 },
+    resave: true,
     store: sessionStore
 }));
 
