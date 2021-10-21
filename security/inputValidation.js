@@ -37,6 +37,7 @@ module.exports = class inputValidation {
       var Account = new accountsDB()
       Account.getBalance(email)
       .then(data=>{
+        console.log(data.results)
         if(amount>0 || amount <= data.results){
           resolve(true)
         }else{
