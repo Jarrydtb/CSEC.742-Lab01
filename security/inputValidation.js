@@ -52,7 +52,7 @@ module.exports = class inputValidation {
   }
   validateTransferRecipient(selfEmail, recipientEmail){
     return new Promise((resolve,reject)=>{
-      if(selfEmail!==recipientEmail && validateEmail(recipientEmail)){
+      if(selfEmail!==recipientEmail && this.validateEmail(recipientEmail)){
         //Check valid email
         var userDB = require('../db/users.js')
         var User = new userDB()
