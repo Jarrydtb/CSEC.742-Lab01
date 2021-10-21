@@ -13,7 +13,7 @@ module.exports = class statements {
             console.log(err)
             reject(err)
           }else{
-            resolve({status:200,data:result[0]})
+            resolve({status:200,data:result})
           }
       })
     })
