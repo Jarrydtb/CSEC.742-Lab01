@@ -10,7 +10,7 @@ module.exports =  class users {
     conn.execute("SELECT * FROM users WHERE ? = ?",[
       key,      // email, id, name etc...
       value,    // example@example.com etc...
-    ],(err,result,fields)=>{
+    ],(err,results,fields)=>{
       if(err){
         reject(err)
       }else{
