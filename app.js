@@ -169,7 +169,7 @@ app.post('/api/auth', (req,res,next) => {
   });
 
 //Login API - Admin user
-app.post('/api/admin/login', (req, res) => {
+app.post('/api/admin/login', (req, res, next) => {
   passport.authenticate('local',(err,user) =>{
     if (err) {
         console.log(err);
