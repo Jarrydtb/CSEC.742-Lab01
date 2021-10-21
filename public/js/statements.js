@@ -19,7 +19,7 @@ function downloadStatement(location){
 function fetchStatements(){
   $.get("/api/fetch/statement_list",function(data,status){
     console.log(data)
-    data.data.forEach(element => {
+    data.data.data.forEach(element => {
       $("#statements_list").append("<li><a class='statement_button' id='"+ element.file_location +"'>"+ element.file_name +"</a></li>")
     });
   })
