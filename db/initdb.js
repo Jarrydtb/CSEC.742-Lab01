@@ -8,8 +8,7 @@ const connection = mysql.createConnection({                     //MYSQL DB Confi
 });
 
 
-module.exports = class initdb {
-
+export default class initdb {
 
     //CREATE SQL CONNECTION
     initialize(){

@@ -9,7 +9,8 @@ var cookieParser = require('cookie-parser');
 
 //Custom File imports
 //SQL Files
-const InitDB = require('./db/initdb.js')//TODO CLose connection per request.
+import InitDB from './db/initdb.js'
+// const InitDB = require('./db/initdb.js')//TODO CLose connection per request.
 const User = require('./db/users.js')
 const Accounts = require('./db/accounts.js')
 const Statements = require('./db/accounts.js')
