@@ -68,6 +68,7 @@ app.use(session({
 
 /* ------------------------- SECURITY CONFIGURATIONS ------------------------------- */
 
+
 //Passport Configuration
 const passport = require('passport');
 require('./security/passport.js')(passport);
@@ -253,7 +254,6 @@ app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
       //trying to escape root directory
       res.json({status:403, msg: "Access Denied "})
     }else{
-      console.log(filename)
       res.download(filename, function(err){
         if(err){
               res.json({status:403, msg: "Access Denied "})
