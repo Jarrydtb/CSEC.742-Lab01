@@ -19,9 +19,6 @@ module.exports = class inputValidation {
     return re.test(String(string))
   }
 
-  validateSearch(){
-
-  }
   validatePath(id,path){
     if(path.split('/')[3]==id){
       const re = /^src(?:\/[^\/]+(?!\.\.))+\/[^\/]+$/;
@@ -50,6 +47,7 @@ module.exports = class inputValidation {
       })
     })
   }
+
   validateTransferRecipient(selfEmail, recipientEmail){
     return new Promise((resolve,reject)=>{
       if(selfEmail!==recipientEmail && this.validateEmail(recipientEmail)){
