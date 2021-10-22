@@ -33,7 +33,7 @@ userFindById(value){
 
   addNew(name, email, password){
     return new Promise((resolve,reject)=>{
-      pool.query("INSERT INTO users (name, email, password, account_type) VALUES(?, ?, ?, 'customer')",[
+      pool.execute("INSERT INTO users (name, email, password, account_type) VALUES(?, ?, ?, 'customer')",[
         name,
         email,
         password
@@ -49,11 +49,11 @@ userFindById(value){
 
   updateName(name,email){
     return new Promise((resolve,reject)=>{
-      pool.query("UPDATE users SET name = ? WHERE email= ?; SELECT name FROM users WHERE email = ?;",[
+      pool.execute("UPDATE users SET name = ? WHERE email= ?; SELECT name FROM users WHERE email = ?;",[
           name,
           email,
           email
-      ], (err, resutls)=> {
+      ], (err, results)=> {
         if(err){
           reject(err)
         }else{
