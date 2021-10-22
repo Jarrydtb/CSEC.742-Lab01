@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require("body-parser");
 var path = require("path");
-var vhost = require('vhost');
+var vhost = require('vhost');                       //not necessary
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 
@@ -19,8 +19,6 @@ var db = require('./db/initdb.js')//TODO CLose connection per request.
 var userDB = require('./db/users.js')
 var accountsDB = require('./db/accounts.js')
 var statementsDB = require('./db/statements.js')
-
-
 
 app.set('view engine', 'ejs');
 
@@ -56,7 +54,6 @@ var sessionStore = new MYSQLStore({
 			data: 'data'
 		}
 	}
-
 })
 
 //Express sessions
@@ -112,7 +109,7 @@ app.get('/dashboard',ensureAuthenticated,(req, res) => {     // Dashboard Page
 	res.render('dashboard',{data:req.user});
 });
 
-app.get('/transferfunds', ensureAuthenticated,(req, res) => {                    // Transfer funds Page
+app.get('/transferfunds', ensureAuthenticated,(req, res) => {         // Transfer funds Page
     Accounts.getBalance(req.user.email)
     .then(data=>{
       res.render('transferFunds',{data:data.data});
@@ -120,7 +117,6 @@ app.get('/transferfunds', ensureAuthenticated,(req, res) => {                   
     .catch(err=>{
       res.render('transferFunds',{data: []});
     })
-
 });
 
 app.get('/statementspage', ensureAuthenticated, (req,res) => {
@@ -156,6 +152,8 @@ app.post('/api/auth', (req,res,next) => {
       if (!user) {
         return res.redirect('/login');
       }
+
+
       req.logIn(user, (logInErr) => {
         if (logInErr) {
           console.log(logInErr)
