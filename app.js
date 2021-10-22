@@ -269,9 +269,17 @@ app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
 //SQL INJECTION
 app.post('/api/update/name', ensureAuthenticated, (req,res)=>{
   //TODO: ADD UPDATE NAME SQL FUNCTION FROM users.js updateName
-  connection.query("UPDATE users SET name = '" + req.body.name + "' WHERE email='" + sessions.email + "'; SELECT name FROM users WHERE email ='" + sessions.email + "';",function(err,result,fields){
-      res.json({result:result[1]})
-  });
+  // connection.query("UPDATE users SET name = '" + req.body.name + "' WHERE email='" + sessions.email + "'; SELECT name FROM users WHERE email ='" + sessions.email + "';",function(err,result,fields){
+  //     res.json({result:result[1]})
+  // });
+  User.updateName(req.body.name, req.sessions.email)
+  .then(results=> {
+    res.json({results:results[1]})
+    console.log(results.status)
+  })
+  .catch(error=>{
+    console.log(error)
+  })
 
 })
 

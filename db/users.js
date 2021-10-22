@@ -17,19 +17,19 @@ module.exports =  class users {
     })
   }
 
-userFindById(value){
-  return new Promise((resolve,reject)=>{
-    pool.execute("SELECT * FROM `users` WHERE `id` = ?",[
-      value,    // example@example.com etc...
-    ],(err,results,fields)=>{
-      if(err){
-        reject(err)
-      }else{
-        resolve({status:200,results})
-      }
+  userFindById(value){
+    return new Promise((resolve,reject)=>{
+      pool.execute("SELECT * FROM `users` WHERE `id` = ?",[
+        value,    // example@example.com etc...
+      ],(err,results,fields)=>{
+        if(err){
+          reject(err)
+        }else{
+          resolve({status:200,results})
+        }
+      })
     })
-  })
-}
+  }
 
   addNew(name, email, password){
     return new Promise((resolve,reject)=>{
@@ -62,6 +62,5 @@ userFindById(value){
       })
     })
   }
-
-
+  
 }
