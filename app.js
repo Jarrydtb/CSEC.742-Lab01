@@ -245,6 +245,7 @@ app.get('/api/fetch/statement_list',ensureAuthenticated,(req,res)=>{
 
 //Download Statement API
 app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
+  console.log('attempt download file')
   //TODO Path validation
   try {
     var root = path.join(__dirname,"/user_data")
@@ -252,15 +253,19 @@ app.get('/api/documents/download', ensureAuthenticated, (req, res) => {
     var filename = path.join(root,"../"+req.query.file);
     if(filename.indexOf(__dirname)!==0){
       //trying to escape root directory
+      console.log('out of bounds')
       res.json({status:403, msg: "Access Denied "})
     }else{
       res.download(filename, function(err){
         if(err){
+              console.log('download error see below:')
+              console.log(err)
               res.json({status:403, msg: "Access Denied "})
         }
       });
     }
   } catch (e) {
+    console.log(error)
     res.json({status:403, msg: "Access Denied "})
   }
 });
