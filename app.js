@@ -279,7 +279,7 @@ app.post('/api/update/name', ensureAuthenticated, (req,res)=>{
   // });
   User.updateName(req.body.name, req.user.email)
   .then(results=> {
-    res.json({results:results[1]})
+    res.json({results:results.results[0]})
     console.log(results.status)
   })
   .catch(error=>{
