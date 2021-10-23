@@ -57,9 +57,9 @@ module.exports = class users {
           reject(err)
         }
         pool.execute(
-          " SELECT name FROM users WHERE email = ?;"
+          "SELECT name FROM users WHERE email = ?;",
           [
-          email
+            email
           ], (err, results, fields) => {
             if (err) {
               reject(err)
