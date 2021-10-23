@@ -277,7 +277,7 @@ app.post('/api/update/name', ensureAuthenticated, (req,res)=>{
   // connection.query("UPDATE users SET name = '" + req.body.name + "' WHERE email='" + sessions.email + "'; SELECT name FROM users WHERE email ='" + sessions.email + "';",function(err,result,fields){
   //     res.json({result:result[1]})
   // });
-  User.updateName(req.body.name, req.sessions.email)
+  User.updateName(req.body.name, req.user.email)
   .then(results=> {
     res.json({results:results[1]})
     console.log(results.status)
