@@ -8,17 +8,18 @@ module.exports = class inputValidation {
   }
 
   validatePassword(passwordString) {//returns hashed password
-    const re = /^(?=.[0-9])(?=.[!@#$%^&])[a-zA-Z0-9!@#$%^&]{6,16}$/;
-    if (re.test(String(passwordString).toLowerCase()) == true) {
-      return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
+      const re = /^(?=.[0-9])(?=.[!@#$%^&])[a-zA-Z0-9!@#$%^&]{6,16}$/;
+      if (re.test(String(passwordString).toLowerCase()) == true) {
         bcrypt
           .hash(passwordString, 10)
           .then(hashed => { resolve(hashed) })
           .catch(err => { reject(err) })
-      })
-    } else {
-      return false
-    }
+      }
+      else {
+        reject(false)
+      }
+    })
   }
 
   validateString(string) {//validates input string
